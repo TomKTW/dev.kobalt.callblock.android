@@ -8,6 +8,7 @@ class CallRepository {
     /** Reference to main application. */
     var application: MainApplication? = null
 
+    // TODO: Add database implementation.
     /** Returns the state of given number to indicate if it's suspicious, scam or normal. */
     fun getState(number: String) = when (number) {
         "4259501212" -> CallState.Suspicious

@@ -16,17 +16,18 @@ class CallBroadcastReceiver : BaseBroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        // Broadcast is received twice. Proceed with broadcast intent with incoming number.
-        when (intent?.action) {
-            PHONE_STATE_INTENT_ACTION -> @Suppress("DEPRECATION")
-            intent.extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)?.also { number ->
-                // Proceed only if incoming call is ringing.
-                if (intent.extras?.getString(TelephonyManager.EXTRA_STATE) == TelephonyManager.EXTRA_STATE_RINGING) {
-                    context?.apply {
+        // Proceed only if this feature is enabled.
+        if (context?.application?.preferencesRepository?.isEnabled == true) {
+            // Broadcast is received twice. Proceed with broadcast intent with incoming number.
+            when (intent?.action) {
+                PHONE_STATE_INTENT_ACTION -> @Suppress("DEPRECATION")
+                intent.extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)?.also { number ->
+                    // Proceed only if incoming call is ringing.
+                    if (intent.extras?.getString(TelephonyManager.EXTRA_STATE) == TelephonyManager.EXTRA_STATE_RINGING) {
                         // Warn if incoming call is suspicious or terminate if it's a scam.
-                        when (application.callRepository.getState(number)) {
-                            CallState.Suspicious -> showToast("Suspicious incoming call")
-                            CallState.Scam -> terminateCall()
+                        when (context.application.callRepository.getState(number)) {
+                            CallState.Suspicious -> context.showToast("Suspicious incoming call")
+                            CallState.Scam -> context.terminateCall()
                             else -> {}
                         }
                     }

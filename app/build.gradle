@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -35,18 +36,28 @@ android {
 }
 
 dependencies {
-    // AndroidX AppCompat
+    // AndroidX AppCompat Support
     implementation 'androidx.appcompat:appcompat:1.4.1'
+    // AndroidX Card View
+    implementation "androidx.cardview:cardview:1.0.0"
     // AndroidX Core Kotlin Extensions
     implementation "androidx.core:core-ktx:1.7.0"
-    // Google Material Design
+    // AndroidX Fragment Kotlin Extensions
+    implementation "androidx.fragment:fragment-ktx:1.4.1"
+    // AndroidX Preferences Kotlin Extensions
+    implementation "androidx.preference:preference-ktx:1.2.0"
+    // Google Material Design Components
     implementation 'com.google.android.material:material:1.6.0'
+    // Simple Stack Navigation
+    implementation 'com.github.Zhuinden:simple-stack:2.6.2'
+    // Simple Stack Navigation Extensions
+    implementation 'com.github.Zhuinden:simple-stack-extensions:2.2.2'
     // Desugar JDK libraries
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
-    // JUnit
+    // JUnit Unit Testing
     testImplementation 'junit:junit:4.13.2'
-    // AndroidX JUnit
+    // JUnit Instrumental Testing
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    // AndroidX Espresso
+    // Espresso Instrumental Testing
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

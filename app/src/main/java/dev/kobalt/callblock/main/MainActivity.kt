@@ -1,35 +1,49 @@
 package dev.kobalt.callblock.main
 
-import android.Manifest
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.result.contract.ActivityResultContracts
+import com.zhuinden.simplestack.History
+import com.zhuinden.simplestack.SimpleStateChanger
+import com.zhuinden.simplestack.StateChange
+import com.zhuinden.simplestack.navigator.Navigator
+import com.zhuinden.simplestackextensions.fragments.DefaultFragmentStateChanger
+import com.zhuinden.simplestackextensions.navigatorktx.backstack
+import dev.kobalt.callblock.R
 import dev.kobalt.callblock.base.BaseActivity
+import dev.kobalt.callblock.base.BaseFragment
+import dev.kobalt.callblock.base.BaseFragmentKey
 import dev.kobalt.callblock.databinding.MainBinding
+import dev.kobalt.callblock.home.HomeFragmentKey
 
 /** Main activity of application. */
-class MainActivity : BaseActivity<MainBinding>() {
+class MainActivity : BaseActivity<MainBinding>(), SimpleStateChanger.NavigationHandler {
 
-    /** Permission request for managing calls. */
-    private val callPermissionsRequest = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        if (permissions.all { it.value }) {
-            Log.d("Permissions", "All granted")
-        } else {
-            Log.d("Permissions", "Some denied")
-        }
-    }
+    /** State change object for navigation. */
+    private lateinit var fragmentStateChanger: DefaultFragmentStateChanger
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Request required permissions.
-        callPermissionsRequest.launch(
-            arrayOf(
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.READ_CALL_LOG
-            )
-        )
+        // Prepare and install navigation to container view.
+        fragmentStateChanger = DefaultFragmentStateChanger(supportFragmentManager, R.id.container)
+        Navigator.configure()
+            .setStateChanger(SimpleStateChanger(this))
+            .install(this, viewBinding.container, History.single(HomeFragmentKey()))
+    }
+
+    override fun onBackPressed() {
+        // Find top fragment matching the tags in history stack.
+        (supportFragmentManager.fragments.find {
+            it.tag == (backstack.getHistory<BaseFragmentKey>().last())?.fragmentTag
+        } as? BaseFragment<*>)?.let { fragment ->
+            // Invoke top fragment's onBackPressed() method if there is any.
+            if (!fragment.onBackPressed()) super.onBackPressed()
+        } ?: run {
+            // Otherwise, exit activity by invoking onBackPressed().
+            super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationEvent(stateChange: StateChange) {
+        fragmentStateChanger.handleStateChange(stateChange)
     }
 
 }

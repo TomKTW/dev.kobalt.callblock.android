@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">CallBlock</string>
+    <string name="home_permissions_title">Required permissions</string>
+    <string name="home_permissions_subtitle">To detect suspicious calls, we need permissions to read phone state and call logs.</string>
+    <string name="home_permissions_request_action">Request permissions</string>
+    <string name="home_permissions_not_granted_title">Permissions not granted</string>
+    <string name="home_permissions_not_granted_message">Detecting unwanted calls will not function without any of requested permissions. Permission to read call logs is required to receive phone number from incoming call, while the permissino for reading phone state is required to receive incoming call requests.</string>
+    <string name="home_permissions_denied_title">Permissions denied</string>
+    <string name="home_permissions_denied_message">Some or all requested permissions have been denied. If you want to grant required permissions, you\'ll have to open application info where you can update your given permissions. Would you like to open app info of this application?</string>
+    <string name="home_permissions_not_granted_close_action">Close</string>
+    <string name="home_permissions_denied_yes_action">Yes</string>
+    <string name="home_permissions_denied_no_action">No</string>
+    <string name="home_state_enabled_title">Detecting suspicious calls</string>
+    <string name="home_state_disabled_title">Allowing all calls</string>
 </resources>
