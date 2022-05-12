@@ -3,8 +3,10 @@ package dev.kobalt.callblock.call
 import android.content.Context
 import android.content.Intent
 import android.telephony.TelephonyManager
-import android.util.Log
 import dev.kobalt.callblock.base.BaseBroadcastReceiver
+import dev.kobalt.callblock.extension.application
+import dev.kobalt.callblock.extension.showToast
+import dev.kobalt.callblock.extension.terminateCall
 
 /** Broadcast receiver for incoming calls. */
 class CallBroadcastReceiver : BaseBroadcastReceiver() {
@@ -14,15 +16,19 @@ class CallBroadcastReceiver : BaseBroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
+        // Broadcast is received twice. Proceed with broadcast intent with incoming number.
         when (intent?.action) {
-            PHONE_STATE_INTENT_ACTION -> {
-                // Broadcast is received twice. Proceed with broadcast intent with incoming number.
-                @Suppress("DEPRECATION")
-                intent.extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)?.also { number ->
-                    when (intent.extras?.getString(TelephonyManager.EXTRA_STATE)) {
-                        TelephonyManager.EXTRA_STATE_RINGING -> Log.d("Incoming", number)
-                        TelephonyManager.EXTRA_STATE_IDLE -> Log.d("Hangup", number)
-                        TelephonyManager.EXTRA_STATE_OFFHOOK -> Log.d("Active", number)
+            PHONE_STATE_INTENT_ACTION -> @Suppress("DEPRECATION")
+            intent.extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)?.also { number ->
+                // Proceed only if incoming call is ringing.
+                if (intent.extras?.getString(TelephonyManager.EXTRA_STATE) == TelephonyManager.EXTRA_STATE_RINGING) {
+                    context?.apply {
+                        // Warn if incoming call is suspicious or terminate if it's a scam.
+                        when (application.callRepository.getState(number)) {
+                            CallState.Suspicious -> showToast("Suspicious incoming call")
+                            CallState.Scam -> terminateCall()
+                            else -> {}
+                        }
                     }
                 }
             }

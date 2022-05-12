@@ -10,6 +10,7 @@ import dev.kobalt.callblock.databinding.MainBinding
 /** Main activity of application. */
 class MainActivity : BaseActivity<MainBinding>() {
 
+    /** Permission request for managing calls. */
     private val callPermissionsRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -22,6 +23,7 @@ class MainActivity : BaseActivity<MainBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Request required permissions.
         callPermissionsRequest.launch(
             arrayOf(
                 Manifest.permission.READ_PHONE_STATE,
