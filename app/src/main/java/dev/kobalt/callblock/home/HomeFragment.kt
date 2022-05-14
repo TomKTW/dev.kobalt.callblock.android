@@ -19,20 +19,26 @@ import kotlinx.coroutines.flow.collect
 class HomeFragment : BaseFragment<HomeBinding>() {
 
     companion object {
-        /** List of all permissions required to detect suspicious incoming calls. */
-        val callPermissions = arrayOf(
+        /** Permissions required to detect suspicious incoming calls. */
+        val detectPermissions = arrayOf(
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CALL_LOG,
         ).let {
             // Android O uses ANSWER_PHONE_CALLS permission that is needed to end phone calls on P+.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) it.plus(Manifest.permission.ANSWER_PHONE_CALLS) else it
         }
+
+        /** Permissions required to allow blocking any calls that are not in contacts. */
+        val contactPermissions = arrayOf(
+            Manifest.permission.READ_CONTACTS
+        )
     }
 
+    /** View model for home fragment. */
     private val viewModel by viewModels<HomeViewModel>()
 
-    /** Permission request for managing calls. */
-    private val callPermissionsRequest = registerForActivityResult(
+    /** Permission request for managing calls to detect suspicious ones. */
+    private val detectPermissionsRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         // Display a message if not all permissions were given.
@@ -51,36 +57,71 @@ class HomeFragment : BaseFragment<HomeBinding>() {
         }.show()
     }
 
+    /** Permission request for reading contact list. */
+    private val contactPermissionsRequest = registerForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        // Display a message if not all permissions were given.
+        if (!permissions.all { it.value == true }) AlertDialog.Builder(requireContext()).apply {
+            // If user was unable to get permission request prompt, ask for checking app info if possible.
+            if (permissions.all { shouldShowRequestPermissionRationale(it.key) }) {
+                setTitle(R.string.home_permissions_contacts_not_granted_title)
+                setMessage(R.string.home_permissions_contacts_not_granted_message)
+                setNeutralButton(R.string.home_permissions_not_granted_close_action) { _, _ -> }
+            } else {
+                setTitle(R.string.home_permissions_contacts_denied_title)
+                setMessage(R.string.home_permissions_contacts_denied_message)
+                setPositiveButton(R.string.home_permissions_denied_yes_action) { _, _ -> requireContext().launchAppInfo() }
+                setNegativeButton(R.string.home_permissions_denied_no_action) { _, _ -> }
+            }
+        }.show()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Monitor detection state.
         viewLifecycleScope.launchWhenCreated {
-            viewModel.stateFlow.collect {
-                viewBinding?.apply {
-                    stateTitleLabel.text = getString(
-                        if (it) R.string.home_state_enabled_title else R.string.home_state_disabled_title
-                    )
-                    stateToggleButton.isChecked = it
-                }
+            viewModel.detectSuspiciousFlow.collect {
+                viewBinding?.apply { detectToggleButton.isChecked = it }
+            }
+        }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.allowContactsOnlyFlow.collect {
+                viewBinding?.apply { contactsToggleButton.isChecked = it }
             }
         }
         viewBinding?.apply {
-            permissionContainer.isVisible =
-                !requireContext().areAllPermissionsGranted(*callPermissions)
-            permissionRequestButton.setOnClickListener {
-                callPermissionsRequest.launch(callPermissions)
+            contactsPermissionContainer.isVisible =
+                !requireContext().areAllPermissionsGranted(*detectPermissions)
+            contactsPermissionRequestButton.setOnClickListener {
+                contactPermissionsRequest.launch(contactPermissions)
             }
-            stateToggleButton.setOnClickListener { viewModel.toggleState() }
+            contactsToggleButton.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateAllowContactsOnly(isChecked)
+            }
+            detectPermissionContainer.isVisible =
+                !requireContext().areAllPermissionsGranted(*contactPermissions)
+            detectPermissionRequestButton.setOnClickListener {
+                detectPermissionsRequest.launch(detectPermissions)
+            }
+            detectToggleButton.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateDetectSuspicious(isChecked)
+            }
         }
     }
 
     override fun onResume() {
         super.onResume()
         viewBinding?.apply {
-            // Check permission state to see if permissions have been changed after request prompt.
-            val permissionsGranted = requireContext().areAllPermissionsGranted(*callPermissions)
-            permissionContainer.isVisible = !permissionsGranted
-            enableContainer.alpha = if (permissionsGranted) 1.0f else 0.5f
-            stateToggleButton.isEnabled = permissionsGranted
+            // Check permission states to see if permissions have been changed after request prompt.
+            val detectPermissionsGranted =
+                requireContext().areAllPermissionsGranted(*detectPermissions)
+            detectPermissionContainer.isVisible = !detectPermissionsGranted
+            detectToggleButton.isEnabled = detectPermissionsGranted
+            val contactPermissionsGranted =
+                requireContext().areAllPermissionsGranted(*contactPermissions)
+            contactsPermissionContainer.isVisible = !contactPermissionsGranted
+            contactsToggleButton.isEnabled = contactPermissionsGranted
         }
     }
 
