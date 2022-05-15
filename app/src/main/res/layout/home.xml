@@ -4,10 +4,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <dev.kobalt.callblock.view.HeaderView
+    <dev.kobalt.callblock.view.HorizontalStackView
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:elevation="8dp" />
+        android:layout_height="wrap_content"
+        android:background="@color/primary_normal"
+        android:elevation="8dp"
+        android:gravity="center">
+
+        <dev.kobalt.callblock.view.ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="16dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_baseline_phone_cancel_24" />
+
+        <dev.kobalt.callblock.view.LabelView
+            android:id="@+id/headerTitleLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </dev.kobalt.callblock.view.HorizontalStackView>
 
     <dev.kobalt.callblock.view.SpaceView
         android:layout_width="match_parent"
@@ -162,5 +186,59 @@
 
         </dev.kobalt.callblock.view.VerticalStackView>
     </dev.kobalt.callblock.view.CardView>
+
+    <dev.kobalt.callblock.view.CardView
+        android:id="@+id/userRuleContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="8dp"
+        app:contentPadding="8dp">
+
+        <dev.kobalt.callblock.view.VerticalStackView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <dev.kobalt.callblock.view.HorizontalStackView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <dev.kobalt.callblock.view.LabelView
+                    android:id="@+id/userRuleTitleLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Apply user rules"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <dev.kobalt.callblock.view.SwitchView
+                    android:id="@+id/userRuleToggleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-8dp"
+                    android:layout_marginBottom="-8dp"
+                    android:backgroundTint="@color/primary_light"
+                    android:textColor="@color/black" />
+
+            </dev.kobalt.callblock.view.HorizontalStackView>
+
+        </dev.kobalt.callblock.view.VerticalStackView>
+    </dev.kobalt.callblock.view.CardView>
+
+    <dev.kobalt.callblock.view.ButtonView
+        android:id="@+id/ruleButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:backgroundTint="@color/primary_light"
+        android:text="Go to rule list"
+        android:textColor="@color/black" />
 
 </dev.kobalt.callblock.view.VerticalStackView>

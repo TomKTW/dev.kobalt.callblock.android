@@ -17,4 +17,25 @@
     <string name="home_permissions_denied_no_action">No</string>
     <string name="home_detect_title">Detecting suspicious calls</string>
     <string name="home_contacts_title">Allowing only contacts</string>
+
+    <string name="call_broadcast_warning_message">Incoming call warning</string>
+
+    <string name="rule_item_action_allow_value">Allow</string>
+    <string name="rule_item_action_warn_value">Warn</string>
+    <string name="rule_item_action_block_value">Block</string>
+    <string name="rule_item_action_undetermined_value">Undetermined</string>
+
+    <string name="rule_edit_add_title">Add</string>
+    <string name="rule_edit_edit_title">Edit</string>
+    <string name="rule_edit_delete_prompt_title">Confirm</string>
+    <string name="rule_edit_delete_prompt_message">Are you sure you want to delete this rule?</string>
+    <string name="rule_edit_delete_prompt_confirm_action">Yes</string>
+    <string name="rule_edit_delete_prompt_cancel_action">No</string>
+    <string name="rule_edit_submit_phone_number_required_message">Please enter a phone number.</string>
+    <string name="rule_edit_submit_action_required_message">Please select an action.</string>
+    <string name="rule_edit_submit_phone_number_invalid_prompt_title">Confirm</string>
+    <string name="rule_edit_submit_phone_number_invalid_prompt_message">This phone number might not be valid. Are you sure you want to save changes?</string>
+    <string name="rule_edit_submit_phone_number_invalid_prompt_confirm_action">Yes</string>
+    <string name="rule_edit_submit_phone_number_invalid_prompt_cancel_action">No</string>
+
 </resources>

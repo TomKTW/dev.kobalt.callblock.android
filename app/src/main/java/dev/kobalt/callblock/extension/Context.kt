@@ -10,6 +10,7 @@ import android.os.Build
 import android.provider.Settings
 import android.telecom.TelecomManager
 import android.util.TypedValue
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
@@ -24,6 +25,9 @@ val Context.application get() = applicationContext as MainApplication
 
 /** Instance of telecom manager. */
 val Context.telecomManager get() = getSystemService<TelecomManager>()
+
+/** Instance of input method manager. */
+val Context.inputMethodManager get() = getSystemService<InputMethodManager>()!!
 
 /** Displays a toast message. */
 fun Context.showToast(message: String, length: Int = Toast.LENGTH_SHORT) {

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.kobalt.callblock.view.FrameView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <dev.kobalt.callblock.view.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="8dp">
+
+        <dev.kobalt.callblock.view.HorizontalStackView
+            android:id="@+id/contentContainer"
+            android:layout_width="match_parent"
+            android:padding="8dp"
+            android:layout_height="wrap_content"
+            android:gravity="center">
+
+            <dev.kobalt.callblock.view.LabelView
+                android:id="@+id/titleLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Title" />
+
+            <dev.kobalt.callblock.view.LabelView
+                android:id="@+id/subtitleLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:text="Subtitle" />
+
+        </dev.kobalt.callblock.view.HorizontalStackView>
+
+    </dev.kobalt.callblock.view.CardView>
+
+</dev.kobalt.callblock.view.FrameView>

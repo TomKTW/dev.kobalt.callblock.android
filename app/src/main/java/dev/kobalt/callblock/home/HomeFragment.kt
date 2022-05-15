@@ -8,11 +8,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import com.zhuinden.simplestackextensions.fragmentsktx.backstack
 import dev.kobalt.callblock.R
 import dev.kobalt.callblock.base.BaseFragment
 import dev.kobalt.callblock.databinding.HomeBinding
 import dev.kobalt.callblock.extension.areAllPermissionsGranted
 import dev.kobalt.callblock.extension.launchAppInfo
+import dev.kobalt.callblock.rule.RuleFragmentKey
 import kotlinx.coroutines.flow.collect
 
 /** Home fragment. */
@@ -81,13 +83,18 @@ class HomeFragment : BaseFragment<HomeBinding>() {
         super.onViewCreated(view, savedInstanceState)
         // Monitor detection state.
         viewLifecycleScope.launchWhenCreated {
-            viewModel.detectSuspiciousFlow.collect {
+            viewModel.predefinedRulesFlow.collect {
                 viewBinding?.apply { detectToggleButton.isChecked = it }
             }
         }
         viewLifecycleScope.launchWhenCreated {
-            viewModel.allowContactsOnlyFlow.collect {
+            viewModel.contactRulesFlow.collect {
                 viewBinding?.apply { contactsToggleButton.isChecked = it }
+            }
+        }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.userRulesFlow.collect {
+                viewBinding?.apply { userRuleToggleButton.isChecked = it }
             }
         }
         viewBinding?.apply {
@@ -97,7 +104,7 @@ class HomeFragment : BaseFragment<HomeBinding>() {
                 contactPermissionsRequest.launch(contactPermissions)
             }
             contactsToggleButton.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updateAllowContactsOnly(isChecked)
+                viewModel.updateContactRules(isChecked)
             }
             detectPermissionContainer.isVisible =
                 !requireContext().areAllPermissionsGranted(*contactPermissions)
@@ -105,7 +112,13 @@ class HomeFragment : BaseFragment<HomeBinding>() {
                 detectPermissionsRequest.launch(detectPermissions)
             }
             detectToggleButton.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updateDetectSuspicious(isChecked)
+                viewModel.updatePredefinedRules(isChecked)
+            }
+            userRuleToggleButton.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.updateUserRules(isChecked)
+            }
+            ruleButton.setOnClickListener {
+                backstack.goTo(RuleFragmentKey())
             }
         }
     }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.kobalt.callblock.view.VerticalStackView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent">
+
+    <dev.kobalt.callblock.view.HorizontalStackView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary_normal"
+        android:elevation="8dp"
+        android:gravity="center">
+
+        <dev.kobalt.callblock.view.ImageButtonView
+            android:id="@+id/backButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="16dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+
+        <dev.kobalt.callblock.view.LabelView
+            android:id="@+id/headerTitleLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="Rules"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <dev.kobalt.callblock.view.ImageButtonView
+            android:id="@+id/addButton"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="16dp"
+            android:tint="@color/white"
+            app:srcCompat="@drawable/ic_baseline_add_24" />
+
+    </dev.kobalt.callblock.view.HorizontalStackView>
+
+
+    <dev.kobalt.callblock.rule.RuleRecyclerView
+        android:id="@+id/listRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        tools:listitem="@layout/rule_recycler_item"
+        android:layout_weight="1" />
+
+</dev.kobalt.callblock.view.VerticalStackView>
