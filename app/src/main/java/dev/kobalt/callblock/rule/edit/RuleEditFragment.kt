@@ -108,7 +108,6 @@ class RuleEditFragment : BaseDialogFragment<RuleEditBinding>() {
                     numberInput.editText,
                     InputMethodManager.SHOW_IMPLICIT
                 )
-                numberInput.requestFocus()
             }
             backButton.setOnClickListener { dismiss() }
             // Display form as adding an rule if there is no given ID.
@@ -157,6 +156,7 @@ class RuleEditFragment : BaseDialogFragment<RuleEditBinding>() {
             ruleAllowButton.setOnClickListener { viewModel.updateAction(RuleEntity.Action.Allow) }
             ruleWarnButton.setOnClickListener { viewModel.updateAction(RuleEntity.Action.Warn) }
             ruleBlockButton.setOnClickListener { viewModel.updateAction(RuleEntity.Action.Block) }
+            numberInput.requestFocus()
         }
     }
 
