@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 abstract class CallDao : DatabaseDao<CallEntity>() {
 
     /** Returns a flow list of calls ordered by timestamp. */
-    @Query("SELECT * FROM call ORDER BY timestamp LIMIT 100")
+    @Query("SELECT * FROM call ORDER BY timestamp DESC LIMIT 100")
     abstract fun getListFlow(): Flow<List<CallEntity>>
 
 }
