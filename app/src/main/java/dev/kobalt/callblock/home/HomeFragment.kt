@@ -137,6 +137,41 @@ class HomeFragment : BaseFragment<HomeBinding>() {
                 }
             }
         }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.countAllowedFlow.collect {
+                viewBinding?.apply {
+                    overviewContainer.allowedCallCountValueLabel.text = it.toString()
+                }
+            }
+        }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.countWarnedFlow.collect {
+                viewBinding?.apply {
+                    overviewContainer.warnedCallCountValueLabel.text = it.toString()
+                }
+            }
+        }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.countBlockedFlow.collect {
+                viewBinding?.apply {
+                    overviewContainer.blockedCallCountValueLabel.text = it.toString()
+                }
+            }
+        }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.countPredefinedFlow.collect {
+                viewBinding?.apply {
+                    overviewContainer.predefinedRuleCountValueLabel.text = it.toString()
+                }
+            }
+        }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.countUserDefinedFlow.collect {
+                viewBinding?.apply {
+                    overviewContainer.userRuleCountValueLabel.text = it.toString()
+                }
+            }
+        }
         viewBinding?.apply {
             overviewContainer.apply {
                 requestCheckCallPermissionsButton.setOnClickListener {

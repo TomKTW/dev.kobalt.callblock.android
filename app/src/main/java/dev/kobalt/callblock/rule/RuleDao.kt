@@ -33,4 +33,12 @@ abstract class RuleDao : DatabaseDao<RuleEntity>() {
     @Query("DELETE FROM rule WHERE id = :id")
     abstract fun deleteItemById(id: Long)
 
+    /** Returns a flow count of predefined rules. */
+    @Query("SELECT COUNT(id) FROM rule WHERE from_user = 0 ")
+    abstract fun getCountPredefinedFlow(): Flow<Int>
+
+    /** Returns a flow count of user defined rules. */
+    @Query("SELECT COUNT(id) FROM rule WHERE from_user = 1")
+    abstract fun getCountUserFlow(): Flow<Int>
+
 }

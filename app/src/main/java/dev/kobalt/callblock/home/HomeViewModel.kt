@@ -22,6 +22,21 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     /** Flow for call list. */
     val callListFlow = app.databaseManager.database.callDao().getListFlow()
 
+    /** Flow for allowed call count. */
+    val countAllowedFlow = app.databaseManager.database.callDao().getCountAllowedFlow()
+
+    /** Flow for warned call count. */
+    val countWarnedFlow = app.databaseManager.database.callDao().getCountWarnedFlow()
+
+    /** Flow for blocked call count. */
+    val countBlockedFlow = app.databaseManager.database.callDao().getCountBlockedFlow()
+
+    /** Flow for predefined rule count. */
+    val countPredefinedFlow = app.databaseManager.database.ruleDao().getCountPredefinedFlow()
+
+    /** Flow for user defined rule count. */
+    val countUserDefinedFlow = app.databaseManager.database.ruleDao().getCountUserFlow()
+
     /** Flow for predefined rule option. */
     val predefinedRulesFlow = MutableSharedFlow<Boolean>(1).apply {
         viewModelScope.launch { emit(app.preferencesRepository.usePredefinedRules) }
