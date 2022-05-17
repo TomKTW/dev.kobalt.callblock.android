@@ -2,7 +2,6 @@ package dev.kobalt.callblock.rule
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.drawable.RippleDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import dev.kobalt.callblock.R
 import dev.kobalt.callblock.databinding.RuleRecyclerItemBinding
+import dev.kobalt.callblock.extension.getResourceColor
 import dev.kobalt.callblock.extension.toStringFormat
 import dev.kobalt.callblock.view.RecyclerView
 import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
@@ -94,6 +94,12 @@ class RuleRecyclerView @JvmOverloads constructor(
                             onItemSelect?.invoke(it)
                         }
                     }
+                    // Background can be applied once when view is created.
+                    binding.contentContainer.background = RippleDrawable(
+                        ColorStateList.valueOf(binding.root.context.getResourceColor(R.color.primary_normal)),
+                        null,
+                        ShapeDrawable(RectShape())
+                    )
                 }
                 else -> throw Exception("Invalid view type.")
             }
@@ -113,11 +119,6 @@ class RuleRecyclerView @JvmOverloads constructor(
                                 // If value is by any chance anything else, treat it as undetermined.
                                 null -> root.context.getString(R.string.rule_item_action_undetermined_value)
                             }
-                            contentContainer.background = RippleDrawable(
-                                ColorStateList.valueOf(Color.BLACK),
-                                null,
-                                ShapeDrawable(RectShape())
-                            )
                         }
                     }
                 }

@@ -19,10 +19,13 @@
     <string name="home_contacts_title">Allowing only contacts</string>
 
     <string name="call_broadcast_warning_message">Incoming call warning</string>
+    <string name="call_empty_message">There are no logged incoming calls.\n\nIncoming calls will be added to this list when they occur.</string>
     <string name="call_item_action_allow_value">Allowed</string>
     <string name="call_item_action_warn_value">Warned</string>
     <string name="call_item_action_block_value">Blocked</string>
 
+    <string name="rule_title">Rules</string>
+    <string name="rule_empty_message">There are no defined rules.\n\nTo add a new rule, press the add button on top-right side of this window.</string>
     <string name="rule_item_action_allow_value">Allow</string>
     <string name="rule_item_action_warn_value">Warn</string>
     <string name="rule_item_action_block_value">Block</string>
@@ -40,5 +43,9 @@
     <string name="rule_edit_submit_phone_number_invalid_prompt_message">This phone number might not be valid. Are you sure you want to save changes?</string>
     <string name="rule_edit_submit_phone_number_invalid_prompt_confirm_action">Yes</string>
     <string name="rule_edit_submit_phone_number_invalid_prompt_cancel_action">No</string>
+    <string name="home_overview_title">Overview</string>
+    <string name="home_calls_title">Calls</string>
+    <string name="home_options_title">Options</string>
+    <string name="rule_edit_phone_number_hint">Phone number</string>
 
 </resources>

@@ -3,6 +3,7 @@ package dev.kobalt.callblock.rule
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import com.zhuinden.simplestackextensions.fragmentsktx.backstack
 import dev.kobalt.callblock.base.BaseFragment
@@ -19,7 +20,11 @@ class RuleFragment : BaseFragment<RuleBinding>() {
         super.onViewCreated(view, savedInstanceState)
         viewLifecycleScope.launchWhenCreated {
             viewModel.listFlow.collect {
-                viewBinding?.apply { listRecycler.list = it }
+                viewBinding?.apply {
+                    emptyListContainer.isVisible = it.isEmpty()
+                    listRecycler.isVisible = it.isNotEmpty()
+                    listRecycler.list = it
+                }
             }
         }
         viewBinding?.apply {

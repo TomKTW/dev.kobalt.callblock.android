@@ -9,23 +9,23 @@ import kotlinx.coroutines.launch
 /** View model for home fragment. */
 class HomeViewModel(application: Application) : BaseViewModel(application) {
 
-    /** Flow for predefined rule option. */
-    val predefinedRulesFlow = MutableSharedFlow<Boolean>(1).apply {
-        viewModelScope.launch { emit(app.preferencesRepository.usePredefinedRules) }
+    /** Updates page state. */
+    val pageState = MutableSharedFlow<HomeFragment.Page>(1).apply {
+        viewModelScope.launch { emit(HomeFragment.Page.Overview) }
     }
 
-    /** Flow for contacts only rule option. */
-    val contactRulesFlow = MutableSharedFlow<Boolean>(1).apply {
-        viewModelScope.launch { emit(app.preferencesRepository.useContactRules) }
-    }
-
-    /** Flow for user defined rule option. */
-    val userRulesFlow = MutableSharedFlow<Boolean>(1).apply {
-        viewModelScope.launch { emit(app.preferencesRepository.useUserRules) }
+    /** Updates page state. */
+    fun updatePageState(value: HomeFragment.Page) {
+        viewModelScope.launch { pageState.emit(value) }
     }
 
     /** Flow for call list. */
     val callListFlow = app.databaseManager.database.callDao().getListFlow()
+
+    /** Flow for predefined rule option. */
+    val predefinedRulesFlow = MutableSharedFlow<Boolean>(1).apply {
+        viewModelScope.launch { emit(app.preferencesRepository.usePredefinedRules) }
+    }
 
     /** Updates predefined rule option. */
     fun updatePredefinedRules(value: Boolean) {
@@ -33,10 +33,20 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         viewModelScope.launch { predefinedRulesFlow.emit(app.preferencesRepository.usePredefinedRules) }
     }
 
+    /** Flow for contacts only rule option. */
+    val contactRulesFlow = MutableSharedFlow<Boolean>(1).apply {
+        viewModelScope.launch { emit(app.preferencesRepository.useContactRules) }
+    }
+
     /** Updates contacts only rule option. */
     fun updateContactRules(value: Boolean) {
         app.preferencesRepository.useContactRules = value
         viewModelScope.launch { contactRulesFlow.emit(app.preferencesRepository.useContactRules) }
+    }
+
+    /** Flow for user defined rule option. */
+    val userRulesFlow = MutableSharedFlow<Boolean>(1).apply {
+        viewModelScope.launch { emit(app.preferencesRepository.useUserRules) }
     }
 
     /** Updates user defined rule option. */

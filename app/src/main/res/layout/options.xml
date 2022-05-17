@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<dev.kobalt.callblock.view.VerticalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <dev.kobalt.callblock.view.VerticalStackView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <dev.kobalt.callblock.view.OptionView
+            android:id="@+id/predefinedRuleOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:subtitleLabel="Incoming calls will be checked with predefined rules."
+            app:titleLabel="Use predefined rules"
+            app:visibleSwitch="true" />
+
+        <dev.kobalt.callblock.view.FrameView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.25"
+            android:background="@color/black" />
+
+        <dev.kobalt.callblock.view.OptionView
+            android:id="@+id/contactRuleOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:subtitleLabel="Incoming calls will be blocked if they are not in contacts."
+            app:titleLabel="Allow calls from contacts only"
+            app:visibleSwitch="true" />
+
+        <dev.kobalt.callblock.view.FrameView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.25"
+            android:background="@color/black" />
+
+        <dev.kobalt.callblock.view.OptionView
+            android:id="@+id/userRuleOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:subtitleLabel="Incoming calls will be checked with user defined rules. These rules override predefined and contact only rules."
+            app:titleLabel="Use user defined rules"
+            app:visibleSwitch="true" />
+
+        <dev.kobalt.callblock.view.FrameView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.25"
+            android:background="@color/black" />
+
+        <dev.kobalt.callblock.view.OptionView
+            android:id="@+id/userEditOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:subtitleLabel="Modify user defined list of rules."
+            app:titleLabel="Edit user rules" />
+
+        <dev.kobalt.callblock.view.FrameView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.25"
+            android:background="@color/black" />
+
+    </dev.kobalt.callblock.view.VerticalStackView>
+
+
+</dev.kobalt.callblock.view.VerticalScrollView>

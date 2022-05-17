@@ -10,6 +10,7 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.OvalShape
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageButton
+import dev.kobalt.callblock.R
 import dev.kobalt.callblock.extension.dp
 
 /** Wrapped view of ImageButton. */
@@ -23,6 +24,7 @@ open class ImageButtonView @JvmOverloads constructor(
         onInit(attrs, defStyleAttr)
     }
 
+    // Internal values as alternative to native variants.
     private var _backgroundTint: Int = Color.BLACK
     private var _rippleTint: Int = Color.BLACK
     private var _rippleInset: Int = 0
@@ -67,12 +69,28 @@ open class ImageButtonView @JvmOverloads constructor(
 
     @Suppress("UNUSED_PARAMETER")
     private fun onInit(attrs: AttributeSet?, defStyleAttr: Int) {
-        rippleTint = Color.BLACK
+        // Apply values from XML layouts.
+        context.theme.obtainStyledAttributes(
+            attrs,
+            R.styleable.ImageButtonView,
+            defStyleAttr,
+            0
+        ).let {
+            try {
+                backgroundTint =
+                    it.getColor(R.styleable.ImageButtonView_backgroundTintColor, Color.TRANSPARENT)
+                rippleTint = it.getColor(R.styleable.ImageButtonView_rippleTintColor, Color.BLACK)
+                imageTint = it.getColor(R.styleable.ImageButtonView_imageTintColor, Color.BLACK)
+            } finally {
+                it.recycle()
+            }
+        }
         rippleInset = context.dp(4)
     }
 
     /** Update background after value has been changed. */
     private fun updateBackground() {
+        // Background consists of oval drawable with background and ripple tint colors.
         background = (LayerDrawable(
             arrayOf(
                 ShapeDrawable(OvalShape()).apply { paint.color = backgroundTint },

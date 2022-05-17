@@ -4,262 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <dev.kobalt.callblock.view.HorizontalStackView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:elevation="8dp"
+        android:gravity="center">
+
+        <dev.kobalt.callblock.view.ImageView
+            android:id="@+id/logoImage"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:padding="16dp"
+            android:tint="@color/primary_normal"
+            app:srcCompat="@drawable/ic_baseline_phone_cancel_24" />
+
+        <dev.kobalt.callblock.view.LabelView
+            android:id="@+id/headerTitleLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:gravity="start"
+            android:text="@string/app_name"
+            android:textColor="@color/primary_normal"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </dev.kobalt.callblock.view.HorizontalStackView>
+
     <dev.kobalt.callblock.view.FrameView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <dev.kobalt.callblock.view.VerticalStackView
+        <include
             android:id="@+id/overviewContainer"
+            layout="@layout/overview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <dev.kobalt.callblock.view.HorizontalStackView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/primary_normal"
-                android:elevation="8dp"
-                android:gravity="center">
-
-                <dev.kobalt.callblock.view.ImageView
-                    android:id="@+id/logoImage"
-                    android:layout_width="56dp"
-                    android:layout_height="56dp"
-                    android:padding="16dp"
-                    android:tint="@color/white"
-                    app:srcCompat="@drawable/ic_baseline_phone_cancel_24" />
-
-                <dev.kobalt.callblock.view.LabelView
-                    android:id="@+id/headerTitleLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_weight="1"
-                    android:gravity="start"
-                    android:text="@string/app_name"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-            </dev.kobalt.callblock.view.HorizontalStackView>
-
-            <dev.kobalt.callblock.view.SpaceView
-                android:layout_width="match_parent"
-                android:layout_height="8dp" />
-
-            <dev.kobalt.callblock.view.CardView
-                android:id="@+id/detectContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="8dp">
-
-                <dev.kobalt.callblock.view.VerticalStackView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <dev.kobalt.callblock.view.HorizontalStackView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
-
-                        <dev.kobalt.callblock.view.LabelView
-                            android:id="@+id/detectTitleLabel"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/home_detect_title"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <dev.kobalt.callblock.view.SwitchView
-                            android:id="@+id/detectToggleButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-8dp"
-                            android:layout_marginBottom="-8dp"
-                            android:backgroundTint="@color/primary_light"
-                            android:textColor="@color/black" />
-
-                    </dev.kobalt.callblock.view.HorizontalStackView>
-
-                    <dev.kobalt.callblock.view.SpaceView
-                        android:layout_width="match_parent"
-                        android:layout_height="4dp" />
-
-                    <dev.kobalt.callblock.view.VerticalStackView
-                        android:id="@+id/detectPermissionContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <dev.kobalt.callblock.view.LabelView
-                            android:id="@+id/detectPermissionMessageLabel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/home_detect_permissions_message"
-                            android:textColor="@color/black" />
-
-                        <dev.kobalt.callblock.view.SpaceView
-                            android:layout_width="match_parent"
-                            android:layout_height="4dp" />
-
-                        <dev.kobalt.callblock.view.ButtonView
-                            android:id="@+id/detectPermissionRequestButton"
-                            style="@style/Widget.AppCompat.Button.Colored"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/primary_light"
-                            android:text="@string/home_permissions_request_action"
-                            android:textColor="@color/black" />
-
-                    </dev.kobalt.callblock.view.VerticalStackView>
-
-                </dev.kobalt.callblock.view.VerticalStackView>
-
-            </dev.kobalt.callblock.view.CardView>
-
-            <dev.kobalt.callblock.view.CardView
-                android:id="@+id/contactsContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="8dp">
-
-                <dev.kobalt.callblock.view.VerticalStackView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <dev.kobalt.callblock.view.HorizontalStackView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
-
-                        <dev.kobalt.callblock.view.LabelView
-                            android:id="@+id/contactsTitleLabel"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/home_contacts_title"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <dev.kobalt.callblock.view.SwitchView
-                            android:id="@+id/contactsToggleButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-8dp"
-                            android:layout_marginBottom="-8dp"
-                            android:backgroundTint="@color/primary_light"
-                            android:textColor="@color/black" />
-
-                    </dev.kobalt.callblock.view.HorizontalStackView>
-
-                    <dev.kobalt.callblock.view.VerticalStackView
-                        android:id="@+id/contactsPermissionContainer"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <dev.kobalt.callblock.view.SpaceView
-                            android:layout_width="match_parent"
-                            android:layout_height="4dp" />
-
-                        <dev.kobalt.callblock.view.LabelView
-                            android:id="@+id/contactsPermissionMessageLabel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/home_contacts_permissions_message"
-                            android:textColor="@color/black" />
-
-                        <dev.kobalt.callblock.view.SpaceView
-                            android:layout_width="match_parent"
-                            android:layout_height="4dp" />
-
-                        <dev.kobalt.callblock.view.ButtonView
-                            android:id="@+id/contactsPermissionRequestButton"
-                            style="@style/Widget.AppCompat.Button.Colored"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:backgroundTint="@color/primary_light"
-                            android:text="@string/home_permissions_request_action"
-                            android:textColor="@color/black" />
-                    </dev.kobalt.callblock.view.VerticalStackView>
-
-                </dev.kobalt.callblock.view.VerticalStackView>
-            </dev.kobalt.callblock.view.CardView>
-
-            <dev.kobalt.callblock.view.CardView
-                android:id="@+id/userRuleContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                app:cardCornerRadius="8dp"
-                app:contentPadding="8dp">
-
-                <dev.kobalt.callblock.view.VerticalStackView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <dev.kobalt.callblock.view.HorizontalStackView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center">
-
-                        <dev.kobalt.callblock.view.LabelView
-                            android:id="@+id/userRuleTitleLabel"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="Apply user rules"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold" />
-
-                        <dev.kobalt.callblock.view.SwitchView
-                            android:id="@+id/userRuleToggleButton"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="-8dp"
-                            android:layout_marginBottom="-8dp"
-                            android:backgroundTint="@color/primary_light"
-                            android:textColor="@color/black" />
-
-                    </dev.kobalt.callblock.view.HorizontalStackView>
-
-                </dev.kobalt.callblock.view.VerticalStackView>
-            </dev.kobalt.callblock.view.CardView>
-
-            <dev.kobalt.callblock.view.ButtonView
-                android:id="@+id/ruleButton"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:backgroundTint="@color/primary_light"
-                android:text="Go to rule list"
-                android:textColor="@color/black" />
-
-            <dev.kobalt.callblock.view.SpaceView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-        </dev.kobalt.callblock.view.VerticalStackView>
+            android:layout_height="match_parent"
+            android:visibility="gone" />
 
         <include
-            android:id="@+id/callContainer"
+            android:id="@+id/callsContainer"
             layout="@layout/call"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/optionsContainer"
+            layout="@layout/options"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
@@ -269,45 +64,54 @@
     <dev.kobalt.callblock.view.HorizontalStackView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary_normal"
+        android:background="@color/white"
         android:elevation="8dp"
         android:gravity="center">
 
-        <dev.kobalt.callblock.view.ButtonView
-            android:id="@+id/overviewButton"
+        <dev.kobalt.callblock.view.LabelButtonView
+            android:id="@+id/footerOverviewButton"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_baseline_home_24"
             android:gravity="center"
-            android:padding="4dp"
-            android:text="Overview"
+            android:paddingTop="6dp"
+            android:paddingBottom="4dp"
+            android:text="@string/home_overview_title"
+            android:textColor="@color/primary_normal"
+            app:imageTintColor="@color/primary_normal"
             android:textSize="12sp"
-            android:tint="@color/white" />
+            app:rippleTintColor="@color/primary_normal"
+            app:topImage="@drawable/ic_baseline_home_24" />
 
-        <dev.kobalt.callblock.view.ButtonView
-            android:id="@+id/callsButton"
+        <dev.kobalt.callblock.view.LabelButtonView
+            android:id="@+id/footerCallsButton"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_baseline_call_24"
             android:gravity="center"
-            android:padding="4dp"
-            android:text="Calls"
+            android:paddingTop="6dp"
+            android:paddingBottom="4dp"
+            android:text="@string/home_calls_title"
+            android:textColor="@color/primary_normal"
+            app:imageTintColor="@color/primary_normal"
             android:textSize="12sp"
-            android:tint="@color/white" />
+            app:rippleTintColor="@color/primary_normal"
+            app:topImage="@drawable/ic_baseline_call_24" />
 
-        <dev.kobalt.callblock.view.ButtonView
-            android:id="@+id/settingsButton"
+        <dev.kobalt.callblock.view.LabelButtonView
+            android:id="@+id/footerOptionsButton"
             android:layout_width="0dp"
             android:layout_height="56dp"
             android:layout_weight="1"
-            android:drawableTop="@drawable/ic_baseline_settings_24"
             android:gravity="center"
-            android:padding="4dp"
-            android:text="Settings"
+            android:paddingTop="6dp"
+            android:paddingBottom="4dp"
+            android:text="@string/home_options_title"
+            android:textColor="@color/primary_normal"
+            app:imageTintColor="@color/primary_normal"
             android:textSize="12sp"
-            android:tint="@color/white" />
+            app:rippleTintColor="@color/primary_normal"
+            app:topImage="@drawable/ic_baseline_settings_24" />
 
     </dev.kobalt.callblock.view.HorizontalStackView>
 

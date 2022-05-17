@@ -21,8 +21,8 @@ import kotlinx.coroutines.flow.collect
 class HomeFragment : BaseFragment<HomeBinding>() {
 
     companion object {
-        /** Permissions required to detect suspicious incoming calls. */
-        val detectPermissions = arrayOf(
+        /** Permissions required to check incoming calls. */
+        val checkCallPermissions = arrayOf(
             Manifest.permission.READ_PHONE_STATE,
             Manifest.permission.READ_CALL_LOG,
         ).let {
@@ -36,11 +36,14 @@ class HomeFragment : BaseFragment<HomeBinding>() {
         )
     }
 
+    private val checkCallsPermissionsGranted get() = requireContext().areAllPermissionsGranted(*checkCallPermissions)
+    private val contactPermissionsGranted get() = requireContext().areAllPermissionsGranted(*contactPermissions)
+
     /** View model for home fragment. */
     private val viewModel by viewModels<HomeViewModel>()
 
-    /** Permission request for managing calls to detect suspicious ones. */
-    private val detectPermissionsRequest = registerForActivityResult(
+    /** Permission request for checking incoming calls. */
+    private val checkCallPermissionsRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
         // Display a message if not all permissions were given.
@@ -81,58 +84,85 @@ class HomeFragment : BaseFragment<HomeBinding>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Monitor detection state.
+        // Observe page position.
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.pageState.collect {
+                viewBinding?.apply {
+                    headerTitleLabel.text = when (it) {
+                        Page.Overview -> requireContext().getString(R.string.home_overview_title)
+                        Page.Calls -> requireContext().getString(R.string.home_calls_title)
+                        Page.Options -> requireContext().getString(R.string.home_options_title)
+                    }
+                    overviewContainer.root.isVisible = it == Page.Overview
+                    callsContainer.root.isVisible = it == Page.Calls
+                    optionsContainer.root.isVisible = it == Page.Options
+                }
+            }
+        }
+        // Observe predefined rule state.
         viewLifecycleScope.launchWhenCreated {
             viewModel.predefinedRulesFlow.collect {
-                viewBinding?.apply { detectToggleButton.isChecked = it }
+                viewBinding?.apply {
+                    optionsContainer.predefinedRuleOption.optionSwitch.isChecked = it
+                }
             }
         }
+        // Observe contacts rule state.
         viewLifecycleScope.launchWhenCreated {
             viewModel.contactRulesFlow.collect {
-                viewBinding?.apply { contactsToggleButton.isChecked = it }
+                viewBinding?.apply {
+                    optionsContainer.contactRuleOption.optionSwitch.isChecked = it
+                }
             }
         }
+        // Observe user defined rule state.
         viewLifecycleScope.launchWhenCreated {
             viewModel.userRulesFlow.collect {
-                viewBinding?.apply { userRuleToggleButton.isChecked = it }
+                viewBinding?.apply {
+                    optionsContainer.userRuleOption.optionSwitch.isChecked = it
+                    optionsContainer.userEditOption.isEnabled =
+                        checkCallsPermissionsGranted && viewModel.userRulesFlow.replayCache.firstOrNull() == true
+                }
             }
         }
+        // Observe call history.
         viewLifecycleScope.launchWhenCreated {
             viewModel.callListFlow.collect {
-                viewBinding?.apply { callContainer.listRecycler.list = it }
+                viewBinding?.apply {
+                    callsContainer.apply {
+                        emptyListContainer.isVisible = it.isEmpty()
+                        listRecycler.isVisible = it.isNotEmpty()
+                        listRecycler.list = it
+                    }
+                }
             }
         }
         viewBinding?.apply {
-            contactsPermissionContainer.isVisible =
-                !requireContext().areAllPermissionsGranted(*detectPermissions)
-            contactsPermissionRequestButton.setOnClickListener {
-                contactPermissionsRequest.launch(contactPermissions)
+            overviewContainer.apply {
+                requestCheckCallPermissionsButton.setOnClickListener {
+                    checkCallPermissionsRequest.launch(checkCallPermissions)
+                }
+                requestContactPermissionsButton.setOnClickListener {
+                    contactPermissionsRequest.launch(contactPermissions)
+                }
             }
-            contactsToggleButton.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updateContactRules(isChecked)
+            optionsContainer.apply {
+                predefinedRuleOption.setOnClickListener {
+                    viewModel.updatePredefinedRules(!predefinedRuleOption.optionSwitch.isChecked)
+                }
+                contactRuleOption.setOnClickListener {
+                    viewModel.updateContactRules(!contactRuleOption.optionSwitch.isChecked)
+                }
+                userRuleOption.setOnClickListener {
+                    viewModel.updateUserRules(!userRuleOption.optionSwitch.isChecked)
+                }
+                userEditOption.setOnClickListener {
+                    backstack.goTo(RuleFragmentKey())
+                }
             }
-            detectPermissionContainer.isVisible =
-                !requireContext().areAllPermissionsGranted(*contactPermissions)
-            detectPermissionRequestButton.setOnClickListener {
-                detectPermissionsRequest.launch(detectPermissions)
-            }
-            detectToggleButton.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updatePredefinedRules(isChecked)
-            }
-            userRuleToggleButton.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.updateUserRules(isChecked)
-            }
-            ruleButton.setOnClickListener {
-                backstack.goTo(RuleFragmentKey())
-            }
-            overviewButton.setOnClickListener {
-                overviewContainer.isVisible = true
-                callContainer.root.isVisible = false
-            }
-            callsButton.setOnClickListener {
-                overviewContainer.isVisible = false
-                callContainer.root.isVisible = true
-            }
+            footerOverviewButton.setOnClickListener { viewModel.updatePageState(Page.Overview) }
+            footerCallsButton.setOnClickListener { viewModel.updatePageState(Page.Calls) }
+            footerOptionsButton.setOnClickListener { viewModel.updatePageState(Page.Options) }
         }
     }
 
@@ -140,15 +170,24 @@ class HomeFragment : BaseFragment<HomeBinding>() {
         super.onResume()
         viewBinding?.apply {
             // Check permission states to see if permissions have been changed after request prompt.
-            val detectPermissionsGranted =
-                requireContext().areAllPermissionsGranted(*detectPermissions)
-            detectPermissionContainer.isVisible = !detectPermissionsGranted
-            detectToggleButton.isEnabled = detectPermissionsGranted
-            val contactPermissionsGranted =
-                requireContext().areAllPermissionsGranted(*contactPermissions)
-            contactsPermissionContainer.isVisible = !contactPermissionsGranted
-            contactsToggleButton.isEnabled = contactPermissionsGranted
+            overviewContainer.apply {
+                checkCallPermissionsContainer.isVisible = !checkCallsPermissionsGranted
+                contactPermissionsContainer.isVisible = !contactPermissionsGranted
+            }
+            optionsContainer.apply {
+                userRuleOption.isEnabled = checkCallsPermissionsGranted
+                userEditOption.isEnabled =
+                    checkCallsPermissionsGranted && viewModel.userRulesFlow.replayCache.firstOrNull() == true
+                predefinedRuleOption.isEnabled = checkCallsPermissionsGranted
+                contactRuleOption.isEnabled =
+                    checkCallsPermissionsGranted && contactPermissionsGranted
+            }
         }
     }
+
+    enum class Page {
+        Overview, Calls, Options
+    }
+
 
 }

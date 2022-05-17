@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <dev.kobalt.callblock.view.LabelView
+        android:id="@+id/emptyListContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="32dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="@string/call_empty_message" />
+
     <dev.kobalt.callblock.call.CallRecyclerView
         android:id="@+id/listRecycler"
         android:layout_width="match_parent"

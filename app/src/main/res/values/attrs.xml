@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="titleLabel" format="string" />
+    <attr name="subtitleLabel" format="string" />
+    <attr name="backgroundTintColor" format="reference" />
+    <attr name="rippleTintColor" format="reference" />
+    <attr name="imageTintColor" format="reference" />
+    <attr name="topImage" format="reference" />
+    <attr name="visibleSwitch" format="boolean" />
+    <declare-styleable name="OptionView">
+        <attr name="titleLabel" />
+        <attr name="subtitleLabel" />
+        <attr name="visibleSwitch" />
+    </declare-styleable>
+    <declare-styleable name="ImageButtonView">
+        <attr name="backgroundTintColor" />
+        <attr name="rippleTintColor" />
+        <attr name="imageTintColor" />
+    </declare-styleable>
+    <declare-styleable name="LabelButtonView">
+        <attr name="backgroundTintColor" />
+        <attr name="rippleTintColor" />
+        <attr name="imageTintColor" />
+        <attr name="topImage" />
+    </declare-styleable>
+</resources>
