@@ -1,6 +1,7 @@
 package dev.kobalt.callblock.main
 
 import dev.kobalt.callblock.base.BaseApplication
+import dev.kobalt.callblock.call.CallRepository
 import dev.kobalt.callblock.contact.ContactRepository
 import dev.kobalt.callblock.database.DatabaseManager
 import dev.kobalt.callblock.preferences.PreferencesRepository
@@ -17,6 +18,12 @@ class MainApplication : BaseApplication() {
         lateinit var globalInstance: MainApplication
     }
 
+    /** Manager for database. */
+    lateinit var databaseManager: DatabaseManager
+
+    /** Repository for logged incoming calls. */
+    lateinit var callRepository: CallRepository
+
     /** Repository for contacts. */
     lateinit var contactRepository: ContactRepository
 
@@ -26,9 +33,6 @@ class MainApplication : BaseApplication() {
     /** Repository for incoming call rules. */
     lateinit var ruleRepository: RuleRepository
 
-    /** Manager for database. */
-    lateinit var databaseManager: DatabaseManager
-
     /** Coroutine scope used for launching coroutines on non-UI thread. */
     val scope = CoroutineScope(Dispatchers.IO)
 
@@ -36,6 +40,7 @@ class MainApplication : BaseApplication() {
         super.onCreate()
         globalInstance = this
         databaseManager = DatabaseManager().also { it.application = this }
+        callRepository = CallRepository().also { it.application = this }
         contactRepository = ContactRepository().also { it.application = this }
         preferencesRepository = PreferencesRepository().also { it.application = this }
         ruleRepository = RuleRepository().also { it.application = this }

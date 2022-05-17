@@ -17,7 +17,7 @@ import dev.kobalt.callblock.extension.launchAppInfo
 import dev.kobalt.callblock.rule.RuleFragmentKey
 import kotlinx.coroutines.flow.collect
 
-/** Home fragment. */
+/** Fragment for home page containing main content for this application. */
 class HomeFragment : BaseFragment<HomeBinding>() {
 
     companion object {
@@ -97,6 +97,11 @@ class HomeFragment : BaseFragment<HomeBinding>() {
                 viewBinding?.apply { userRuleToggleButton.isChecked = it }
             }
         }
+        viewLifecycleScope.launchWhenCreated {
+            viewModel.callListFlow.collect {
+                viewBinding?.apply { callContainer.listRecycler.list = it }
+            }
+        }
         viewBinding?.apply {
             contactsPermissionContainer.isVisible =
                 !requireContext().areAllPermissionsGranted(*detectPermissions)
@@ -119,6 +124,14 @@ class HomeFragment : BaseFragment<HomeBinding>() {
             }
             ruleButton.setOnClickListener {
                 backstack.goTo(RuleFragmentKey())
+            }
+            overviewButton.setOnClickListener {
+                overviewContainer.isVisible = true
+                callContainer.root.isVisible = false
+            }
+            callsButton.setOnClickListener {
+                overviewContainer.isVisible = false
+                callContainer.root.isVisible = true
             }
         }
     }

@@ -6,6 +6,7 @@ import dev.kobalt.callblock.database.DatabaseDao
 import kotlinx.coroutines.flow.Flow
 
 @Dao
+/** Data access object for call rules. */
 abstract class RuleDao : DatabaseDao<RuleEntity>() {
 
     /** Returns a list of rules. */

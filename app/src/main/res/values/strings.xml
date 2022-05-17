@@ -19,6 +19,9 @@
     <string name="home_contacts_title">Allowing only contacts</string>
 
     <string name="call_broadcast_warning_message">Incoming call warning</string>
+    <string name="call_item_action_allow_value">Allowed</string>
+    <string name="call_item_action_warn_value">Warned</string>
+    <string name="call_item_action_block_value">Blocked</string>
 
     <string name="rule_item_action_allow_value">Allow</string>
     <string name="rule_item_action_warn_value">Warn</string>
