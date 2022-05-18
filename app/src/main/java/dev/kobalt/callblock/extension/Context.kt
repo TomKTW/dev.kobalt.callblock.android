@@ -9,6 +9,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.telecom.TelecomManager
+import android.telephony.TelephonyManager
 import android.util.TypedValue
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -20,11 +21,15 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import dev.kobalt.callblock.main.MainApplication
 
+
 /** Instance of main application. */
 val Context.application get() = applicationContext as MainApplication
 
 /** Instance of telecom manager. */
-val Context.telecomManager get() = getSystemService<TelecomManager>()
+val Context.telecomManager get() = getSystemService<TelecomManager>()!!
+
+/** Instance of telephony manager. */
+val Context.telephonyManager get() = getSystemService<TelephonyManager>()!!
 
 /** Instance of input method manager. */
 val Context.inputMethodManager get() = getSystemService<InputMethodManager>()!!
@@ -35,15 +40,34 @@ fun Context.showToast(message: String, length: Int = Toast.LENGTH_SHORT) {
 }
 
 /** Terminates currently active call. */
-fun Context.terminateCall() {
-    // TODO: Add call termination for Android O and lower.
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+fun Context.terminateCall(): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ANSWER_PHONE_CALLS
             ) != PackageManager.PERMISSION_GRANTED
-        ) return
-        telecomManager?.apply { @Suppress("DEPRECATION") if (isInCall) endCall() }
+        ) {
+            false
+        } else {
+            @Suppress("DEPRECATION")
+            telecomManager.takeIf { it.isInCall }?.endCall() ?: false
+        }
+    } else {
+        return runCatching {
+            val telephonyManager = this.telephonyManager
+            val classTelephonyManager = Class.forName(telephonyManager.javaClass.name)
+            val methodGetITelephony =
+                classTelephonyManager.getDeclaredMethod("getITelephony").also {
+                    it.isAccessible = true
+                }
+            val telephony = methodGetITelephony.invoke(telephonyManager)
+            val classTelephony = Class.forName(telephony.javaClass.name)
+            classTelephony.getDeclaredMethod("endCall").invoke(telephony)
+            true
+        }.getOrElse {
+            it.printStackTrace()
+            false
+        }
     }
 }
 
@@ -94,3 +118,22 @@ fun Context.launchAppInfo(packageName: String = this.packageName) {
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
     })
 }
+
+fun Context.isDefaultDialer() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+    telecomManager.defaultDialerPackage == packageName
+} else {
+    false
+}
+
+fun Context.isGrantedForCallScreening() = areAllPermissionsGranted(
+    Manifest.permission.READ_PHONE_STATE,
+    Manifest.permission.READ_CALL_LOG,
+    Manifest.permission.CALL_PHONE
+) && isDefaultDialer() && if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    isPermissionGranted(Manifest.permission.ANSWER_PHONE_CALLS)
+} else true
+
+fun Context.isGrantedToAllowContactCallsOnly() =
+    isGrantedForCallScreening() && areAllPermissionsGranted(
+        Manifest.permission.READ_CONTACTS
+    )

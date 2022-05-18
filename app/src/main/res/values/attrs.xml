@@ -7,10 +7,14 @@
     <attr name="imageTintColor" format="reference" />
     <attr name="topImage" format="reference" />
     <attr name="visibleSwitch" format="boolean" />
+    <attr name="visibleButton" format="boolean" />
+    <attr name="buttonLabelText" format="string" />
     <declare-styleable name="OptionView">
         <attr name="titleLabel" />
         <attr name="subtitleLabel" />
         <attr name="visibleSwitch" />
+        <attr name="visibleButton" />
+        <attr name="buttonLabelText" />
     </declare-styleable>
     <declare-styleable name="ImageButtonView">
         <attr name="backgroundTintColor" />

@@ -47,5 +47,7 @@
     <string name="home_calls_title">Calls</string>
     <string name="home_options_title">Options</string>
     <string name="rule_edit_phone_number_hint">Phone number</string>
+    <string name="permission_item_grant_action">Grant</string>
+    <string name="permission_item_granted_action">Granted</string>
 
 </resources>

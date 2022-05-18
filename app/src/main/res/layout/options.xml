@@ -67,6 +67,20 @@
             android:alpha="0.25"
             android:background="@color/black" />
 
+        <dev.kobalt.callblock.view.OptionView
+            android:id="@+id/permissionsOption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            app:subtitleLabel="Check and grant required permissions."
+            app:titleLabel="Review permissions" />
+
+        <dev.kobalt.callblock.view.FrameView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.25"
+            android:background="@color/black" />
+
     </dev.kobalt.callblock.view.VerticalStackView>
 
 

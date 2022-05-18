@@ -36,6 +36,12 @@ open class OptionView @JvmOverloads constructor(
         isClickable = false
     }
 
+    val optionButton = LabelButtonView(context).apply {
+        isClickable = false
+        setSupportAllCaps(true)
+        background = null
+    }
+
     override fun setEnabled(enabled: Boolean) {
         super.setEnabled(enabled)
         // Update enabled state for subviews.
@@ -65,6 +71,8 @@ open class OptionView @JvmOverloads constructor(
                 titleLabel.text = it.getString(R.styleable.OptionView_titleLabel)
                 subtitleLabel.text = it.getString(R.styleable.OptionView_subtitleLabel)
                 optionSwitch.isVisible = it.getBoolean(R.styleable.OptionView_visibleSwitch, false)
+                optionButton.isVisible = it.getBoolean(R.styleable.OptionView_visibleButton, false)
+                optionButton.text = it.getString(R.styleable.OptionView_buttonLabelText)
             } finally {
                 it.recycle()
             }
@@ -79,6 +87,7 @@ open class OptionView @JvmOverloads constructor(
         addView(labelStack, LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f))
         addView(SpaceView(context), LayoutParams(context.dp(4), LayoutParams.MATCH_PARENT))
         addView(optionSwitch)
+        addView(optionButton)
         // Apply ripple to background.
         background = RippleDrawable(
             ColorStateList.valueOf(context.getResourceColor(R.color.primary_normal)),
