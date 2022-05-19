@@ -34,10 +34,10 @@ class CallBroadcastReceiver : BaseBroadcastReceiver() {
                 // Proceed only incoming call is ringing.
                 if (intent.isIncomingCallRinging) {
                     // Normalize phone number value.
-                    intent.incomingCallNumber?.toPhoneNumber()?.toStringFormat()?.let { number ->
+                    intent.incomingCallNumber?.let { normalizePhoneNumber(it) }?.let { number ->
                         /** Adds call log to database. */
                         fun log(action: CallEntity.Action?) = application.callRepository.insertItem(
-                            CallEntity(null, number.toPhoneNumber(), action, LocalDateTime.now())
+                            CallEntity(null, number, action, LocalDateTime.now())
                         )
                         // Get, log and apply action for given phone number.
                         when (application.ruleRepository.getItemActionForPhoneNumber(number)) {

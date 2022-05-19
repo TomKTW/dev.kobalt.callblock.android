@@ -6,9 +6,8 @@ import android.telecom.CallScreeningService
 import androidx.annotation.RequiresApi
 import dev.kobalt.callblock.R
 import dev.kobalt.callblock.extension.application
+import dev.kobalt.callblock.extension.normalizePhoneNumber
 import dev.kobalt.callblock.extension.showToast
-import dev.kobalt.callblock.extension.toPhoneNumber
-import dev.kobalt.callblock.extension.toStringFormat
 import dev.kobalt.callblock.rule.RuleEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -27,10 +26,10 @@ class CallScreeningService : CallScreeningService() {
         applicationContext.application.apply {
             scope.launch(Dispatchers.IO) {
                 // Normalize phone number value.
-                callDetails.incomingCallNumber?.toPhoneNumber()?.toStringFormat()?.let { number ->
+                callDetails.incomingCallNumber?.let { normalizePhoneNumber(it) }?.let { number ->
                     /** Adds call log to database. */
                     fun log(action: CallEntity.Action?) = application.callRepository.insertItem(
-                        CallEntity(null, number.toPhoneNumber(), action, LocalDateTime.now())
+                        CallEntity(null, number, action, LocalDateTime.now())
                     )
                     // Get, log and apply action for given phone number.
                     when (application.ruleRepository.getItemActionForPhoneNumber(number)) {

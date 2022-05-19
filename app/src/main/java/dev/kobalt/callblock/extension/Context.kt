@@ -23,6 +23,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import dev.kobalt.callblock.main.MainApplication
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
+import java.util.*
 
 /** Instance of main application. */
 val Context.application get() = applicationContext as MainApplication
@@ -165,3 +167,17 @@ fun Context.isGrantedToAllowContactCallsOnly() =
     isGrantedForCallScreening() && areAllPermissionsGranted(
         Manifest.permission.READ_CONTACTS
     )
+
+fun Context.normalizePhoneNumber(value: String): String? {
+    return application.phoneNumberUtil.parse(value, Locale.getDefault().country)
+        ?.let { application.phoneNumberUtil.format(it, PhoneNumberUtil.PhoneNumberFormat.E164) }
+}
+
+fun Context.internationalPhoneNumber(value: String): String? {
+    return application.phoneNumberUtil.parse(value, Locale.getDefault().country)?.let {
+        application.phoneNumberUtil.format(
+            it,
+            PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL
+        )
+    }
+}

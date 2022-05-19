@@ -15,9 +15,8 @@ import androidx.viewbinding.ViewBinding
 import dev.kobalt.callblock.R
 import dev.kobalt.callblock.databinding.RuleRecyclerItemBinding
 import dev.kobalt.callblock.extension.getResourceColor
-import dev.kobalt.callblock.extension.toStringFormat
+import dev.kobalt.callblock.extension.internationalPhoneNumber
 import dev.kobalt.callblock.view.RecyclerView
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 
 /** Recycler view for listing rules. */
 class RuleRecyclerView @JvmOverloads constructor(
@@ -111,7 +110,7 @@ class RuleRecyclerView @JvmOverloads constructor(
                     list.getOrNull(holder.adapterPosition).let { item ->
                         holder.binding.apply {
                             titleLabel.text =
-                                item?.number?.toStringFormat(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL)
+                                item?.number?.let { root.context.internationalPhoneNumber(it) }
                             subtitleLabel.text = when (item?.action) {
                                 RuleEntity.Action.Allow -> root.context.getString(R.string.rule_item_action_allow_value)
                                 RuleEntity.Action.Warn -> root.context.getString(R.string.rule_item_action_warn_value)

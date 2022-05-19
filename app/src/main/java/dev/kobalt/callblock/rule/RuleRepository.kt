@@ -1,21 +1,19 @@
 package dev.kobalt.callblock.rule
 
-import dev.kobalt.callblock.extension.toPhoneNumber
-import dev.kobalt.callblock.main.MainApplication
+import dev.kobalt.callblock.contact.ContactRepository
+import dev.kobalt.callblock.preferences.PreferencesRepository
 
 /** Repository for call rules. */
 class RuleRepository {
 
-    /** Reference to main application. */
-    lateinit var application: MainApplication
-
-    /** Data access object for rules. */
-    private val dao get() = application.databaseManager.database.ruleDao()
+    lateinit var preferencesRepository: PreferencesRepository
+    lateinit var contactRepository: ContactRepository
+    lateinit var dao: RuleDao
 
     /** List of pre-defined rules.*/
     private val defaultRules = listOf(
-        RuleEntity(0, "4259501212".toPhoneNumber(), RuleEntity.Action.Warn, false),
-        RuleEntity(1, "2539501212".toPhoneNumber(), RuleEntity.Action.Block, false)
+        RuleEntity(0, "4259501212", RuleEntity.Action.Warn, false),
+        RuleEntity(1, "2539501212", RuleEntity.Action.Block, false)
     )
 
     /** Updates a list of predefined rules into database. */
@@ -55,11 +53,11 @@ class RuleRepository {
      * - Returned action is allow if the given number is in contact list or contact rules are disabled.
      */
     fun getItemActionForPhoneNumber(number: String): RuleEntity.Action {
-        application.preferencesRepository.apply {
+        preferencesRepository.apply {
             /** Returns contact rule action. Returned action is allow if the given number is in contact list or contact rules are disabled.  */
             fun checkContactRule(number: String): RuleEntity.Action = when {
                 useContactRules -> when {
-                    application.contactRepository.isNumberInContacts(number) -> RuleEntity.Action.Allow
+                    contactRepository.isNumberInContacts(number) -> RuleEntity.Action.Allow
                     else -> RuleEntity.Action.Block
                 }
                 else -> RuleEntity.Action.Allow

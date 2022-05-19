@@ -1,9 +1,6 @@
 package dev.kobalt.callblock.call
 
 import androidx.room.*
-import dev.kobalt.callblock.extension.PhoneNumber
-import dev.kobalt.callblock.extension.toPhoneNumber
-import dev.kobalt.callblock.extension.toStringFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -13,7 +10,7 @@ import java.time.ZoneOffset
 /** Entity for incoming call that contains phone number, taken action and timestamp when call has occurred. */
 data class CallEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long?,
-    @ColumnInfo(name = "number") val number: PhoneNumber?,
+    @ColumnInfo(name = "number") val number: String?,
     @ColumnInfo(name = "action") val action: Action?,
     @ColumnInfo(name = "timestamp") val timestamp: LocalDateTime?
 ) {
@@ -31,12 +28,6 @@ data class CallEntity(
 
         @TypeConverter
         fun toAction(value: Int?): Action? = Action.values().find { it.value == value }
-
-        @TypeConverter
-        fun fromNumber(value: PhoneNumber?): String? = value?.toStringFormat()
-
-        @TypeConverter
-        fun toNumber(value: String?): PhoneNumber? = value?.toPhoneNumber()
 
         @TypeConverter
         fun fromTimestamp(value: Long?): LocalDateTime? =

@@ -1,15 +1,15 @@
 package dev.kobalt.callblock.preferences
 
+import android.content.Context
 import androidx.preference.PreferenceManager
-import dev.kobalt.callblock.main.MainApplication
 
 /** Repository for preferences. */
 class PreferencesRepository {
 
-    /** Reference to main application. */
-    lateinit var application: MainApplication
+    /** Reference to context. */
+    lateinit var context: Context
 
-    private val instance get() = application.let { PreferenceManager.getDefaultSharedPreferences(it) }!!
+    private val instance get() = context.let { PreferenceManager.getDefaultSharedPreferences(it) }!!
 
     /** State for applying predefined rules. */
     var usePredefinedRules: Boolean

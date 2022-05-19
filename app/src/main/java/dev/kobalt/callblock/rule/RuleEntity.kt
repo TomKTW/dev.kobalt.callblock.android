@@ -1,9 +1,6 @@
 package dev.kobalt.callblock.rule
 
 import androidx.room.*
-import dev.kobalt.callblock.extension.PhoneNumber
-import dev.kobalt.callblock.extension.toPhoneNumber
-import dev.kobalt.callblock.extension.toStringFormat
 
 @TypeConverters(RuleEntity.DataConverter::class)
 @Entity(tableName = "rule")
@@ -13,7 +10,7 @@ import dev.kobalt.callblock.extension.toStringFormat
  */
 data class RuleEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id") val id: Long?,
-    @ColumnInfo(name = "number") val number: PhoneNumber?,
+    @ColumnInfo(name = "number") val number: String?,
     @ColumnInfo(name = "action") val action: Action?,
     @ColumnInfo(name = "from_user") val fromUser: Boolean?
 ) {
@@ -34,12 +31,6 @@ data class RuleEntity(
 
         @TypeConverter
         fun toAction(value: Int?): Action? = Action.values().find { it.value == value }
-
-        @TypeConverter
-        fun fromNumber(value: PhoneNumber?): String? = value?.toStringFormat()
-
-        @TypeConverter
-        fun toNumber(value: String?): PhoneNumber? = value?.toPhoneNumber()
 
     }
 

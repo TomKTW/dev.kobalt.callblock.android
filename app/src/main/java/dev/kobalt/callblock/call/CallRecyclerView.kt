@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewbinding.ViewBinding
 import dev.kobalt.callblock.R
 import dev.kobalt.callblock.databinding.CallRecyclerItemBinding
-import dev.kobalt.callblock.extension.toStringFormat
+import dev.kobalt.callblock.extension.internationalPhoneNumber
 import dev.kobalt.callblock.view.RecyclerView
-import io.michaelrocks.libphonenumber.android.PhoneNumberUtil
 import java.time.format.DateTimeFormatter
 
 /** Recycler view for listing calls. */
@@ -101,7 +100,7 @@ class CallRecyclerView @JvmOverloads constructor(
                     list.getOrNull(holder.adapterPosition).let { item ->
                         holder.binding.apply {
                             titleLabel.text =
-                                item?.number?.toStringFormat(PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL)
+                                item?.number?.let { root.context.internationalPhoneNumber(it) }
                             subtitleLabel.text = when (item?.action) {
                                 CallEntity.Action.Allow -> root.context.getString(R.string.call_item_action_allow_value)
                                 CallEntity.Action.Warn -> root.context.getString(R.string.call_item_action_warn_value)

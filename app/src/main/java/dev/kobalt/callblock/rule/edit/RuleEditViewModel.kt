@@ -3,8 +3,7 @@ package dev.kobalt.callblock.rule.edit
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import dev.kobalt.callblock.base.BaseViewModel
-import dev.kobalt.callblock.extension.toPhoneNumber
-import dev.kobalt.callblock.extension.toStringFormat
+import dev.kobalt.callblock.extension.normalizePhoneNumber
 import dev.kobalt.callblock.rule.RuleEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -38,7 +37,7 @@ class RuleEditViewModel(application: Application) : BaseViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             id?.let { app.ruleRepository.getItem(it) }?.let { item ->
                 item.id?.let { updateId(it) }
-                item.number?.toStringFormat().let { updateNumber(it) }
+                item.number?.let { updateNumber(it) }
                 item.action?.let { updateAction(it) }
             }
         }
@@ -51,7 +50,7 @@ class RuleEditViewModel(application: Application) : BaseViewModel(application) {
             saveFlow.emit(SaveState.Saving)
             // Check if user defined rule for given phone number already exists to avoid duplicates.
             if (idFlow.replayCache.firstOrNull() == null) {
-                numberFlow.replayCache.firstOrNull()?.toPhoneNumber()?.toStringFormat()?.let {
+                numberFlow.replayCache.firstOrNull()?.let { app.normalizePhoneNumber(it) }?.let {
                     if (app.ruleRepository.getItemUserOnlyByNumber(it) != null) {
                         saveFlow.emit(SaveState.AlreadyExists)
                         saveFlow.emit(SaveState.Idle)
@@ -64,7 +63,7 @@ class RuleEditViewModel(application: Application) : BaseViewModel(application) {
                 app.ruleRepository.updateItem(
                     RuleEntity(
                         id = idFlow.replayCache.firstOrNull(),
-                        number = numberFlow.replayCache.firstOrNull()?.toPhoneNumber(),
+                        number = numberFlow.replayCache.firstOrNull(),
                         action = actionFlow.replayCache.firstOrNull(),
                         fromUser = true
                     )

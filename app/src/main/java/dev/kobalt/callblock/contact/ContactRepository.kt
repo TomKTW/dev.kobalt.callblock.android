@@ -1,19 +1,19 @@
 package dev.kobalt.callblock.contact
 
+import android.content.Context
 import android.net.Uri
 import android.provider.BaseColumns
 import android.provider.ContactsContract
-import dev.kobalt.callblock.main.MainApplication
 
 class ContactRepository {
 
-    /** Reference to main application. */
-    var application: MainApplication? = null
+    /** Reference to context. */
+    lateinit var context: Context
 
     /** Returns true if given number exists in contact list. */
     fun isNumberInContacts(number: String): Boolean {
         // Query looks up for phone number in contact list.
-        return application?.contentResolver?.query(
+        return context.contentResolver?.query(
             Uri.withAppendedPath(
                 ContactsContract.PhoneLookup.CONTENT_FILTER_URI,
                 Uri.encode(number)
