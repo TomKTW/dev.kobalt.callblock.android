@@ -10,6 +10,8 @@ This application allows you to block incoming calls from specific phone numbers.
 - Use option to allow incoming calls from contacts only.
 - Use user defined rules for defining your own ruleset and if needed to override predefined or
   contact rules
+- Permission option variety in case additional permissions are required
+- Night mode theme available
 
 ## Requirements
 
@@ -17,6 +19,11 @@ This application allows you to block incoming calls from specific phone numbers.
 
 ### Permissions
 
+Note: Depending on Android version, you may require either call screening role, default dialer or
+additional permissions.
+
+- Call screening role: To perform call screening on Android 10.0+, you need to give a role to this
+  application.
 - Default dialer: To check incoming calls on Android 7.0+, this application should be set as default
   dialer.
 - Read phone state: This permission is required to retrieve incoming calls.
