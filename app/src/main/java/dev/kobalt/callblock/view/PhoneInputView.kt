@@ -10,7 +10,9 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updateMargins
 import androidx.core.view.updatePadding
 import com.lamudi.phonefield.PhoneEditText
+import dev.kobalt.callblock.R
 import dev.kobalt.callblock.extension.dp
+import dev.kobalt.callblock.extension.getResourceColor
 import java.util.*
 
 open class PhoneInputView @JvmOverloads constructor(
@@ -20,9 +22,15 @@ open class PhoneInputView @JvmOverloads constructor(
 ) : PhoneEditText(context, attrs, defStyleAttr) {
 
     init {
+        onInit()
+    }
+
+    private fun onInit() {
         editText.isFocusable = true
         editText.isFocusableInTouchMode = true
         editText.background = null
+        editText.setTextColor(context.getResourceColor(R.color.black))
+        editText.setHintTextColor(context.getResourceColor(R.color.black_a50))
         editText.setPadding(0)
         spinner.background = null
         spinner.updatePadding(0, 0, context.dp(8), 0)
