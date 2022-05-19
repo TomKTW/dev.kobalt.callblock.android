@@ -25,12 +25,12 @@
     <string name="options_predefined_rule_subtitle">Incoming calls will be checked with predefined rules.</string>
     <string name="options_contact_rule_title">Allow calls from contacts only</string>
     <string name="options_contact_rule_subtitle">Incoming calls will be blocked if they are not in contacts.</string>
-    <string name="options_user_rule_subtitle">Incoming calls will be checked with user defined rules. These rules override predefined and contact only rules.</string>
     <string name="options_user_rule_title">Use user defined rules</string>
-    <string name="options_user_edit_subtitle">Modify user defined list of rules.</string>
+    <string name="options_user_rule_subtitle">Incoming calls will be checked with user defined rules. These rules override predefined and contact only rules.</string>
     <string name="options_user_edit_title">Edit user rules</string>
-    <string name="options_permissions_subtitle">Check and grant required permissions.</string>
+    <string name="options_user_edit_subtitle">Modify user defined list of rules.</string>
     <string name="options_permissions_title">Review permissions</string>
+    <string name="options_permissions_subtitle">Check and grant required permissions.</string>
 
     <string name="rule_title">Rules</string>
     <string name="rule_empty_message">There are no defined rules.\n\nTo add a new rule, press the add button on top-right side of this window.</string>
@@ -62,16 +62,16 @@
     <string name="permissions_grant_all_action">Grant all</string>
     <string name="permissions_default_dialer_title">Default dialer</string>
     <string name="permissions_default_dialer_subtitle">To check incoming calls, this system requires that this application is set as default dialer.</string>
-    <string name="permissions_read_phone_state_subtitle">This permission is required to retrieve incoming calls.</string>
     <string name="permissions_read_phone_state_title">Read phone state</string>
-    <string name="permissions_read_call_logs_subtitle">This permission is required to retrieve phone number from incoming calls.</string>
+    <string name="permissions_read_phone_state_subtitle">This permission is required to retrieve incoming calls.</string>
     <string name="permissions_read_call_logs_title">Read call logs</string>
-    <string name="permissions_read_contacts_subtitle">This permission is required to check if phone number from incoming call exists in contacts.</string>
+    <string name="permissions_read_call_logs_subtitle">This permission is required to retrieve phone number from incoming calls.</string>
     <string name="permissions_read_contacts_title">Read contacts</string>
-    <string name="permissions_call_phone_subtitle">This permission is required to end incoming call.</string>
+    <string name="permissions_read_contacts_subtitle">This permission is required to check if phone number from incoming call exists in contacts.</string>
     <string name="permissions_call_phone_title">Call phone</string>
-    <string name="permissions_answer_phone_calls_subtitle">This permission is required to drop incoming call.</string>
+    <string name="permissions_call_phone_subtitle">This permission is required to end incoming call.</string>
     <string name="permissions_answer_phone_calls_title">Answer phone calls</string>
+    <string name="permissions_answer_phone_calls_subtitle">This permission is required to drop incoming call.</string>
     <string name="permissions_item_grant_action">Grant</string>
     <string name="permissions_item_granted_action">Granted</string>
     <string name="permissions_denied_dialog_title">Information</string>
