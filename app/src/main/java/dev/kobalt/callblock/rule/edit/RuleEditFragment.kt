@@ -95,8 +95,12 @@ class RuleEditFragment : BaseDialogFragment<RuleEditBinding>() {
                 }
                 when (it) {
                     RuleEditViewModel.SaveState.Success -> dismiss()
-                    RuleEditViewModel.SaveState.AlreadyExists -> requireContext().showToast("Rule with given phone number already exists.")
-                    RuleEditViewModel.SaveState.Failure -> requireContext().showToast("Rule couldn't be saved properly.")
+                    RuleEditViewModel.SaveState.AlreadyExists -> requireContext().showToast(
+                        getString(R.string.rule_edit_save_already_exists_message)
+                    )
+                    RuleEditViewModel.SaveState.Failure -> requireContext().showToast(
+                        getString(R.string.rule_edit_save_failure_message)
+                    )
                     else -> {}
                 }
             }

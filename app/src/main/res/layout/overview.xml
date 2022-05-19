@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Required permissions"
+                    android:text="@string/overview_required_permissions_title"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -44,14 +44,14 @@
                 <dev.kobalt.callblock.view.LabelView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="To enable functionality of this application, you'll have to grant permissions required for screening calls."
+                    android:text="@string/overview_required_permissions_message"
                     android:textColor="@color/white" />
 
                 <dev.kobalt.callblock.view.SpaceView
                     android:layout_width="match_parent"
                     android:layout_height="8dp" />
 
-                <io.github.florent37.shapeofview.shapes.RoundRectView
+                <dev.kobalt.callblock.view.RoundRectangleView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:shape_roundRect_bottomLeftRadius="8dp"
@@ -65,13 +65,13 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Review"
+                        android:text="@string/overview_required_permissions_review_action"
                         android:textAllCaps="true"
                         android:textColor="@color/primary_normal"
                         app:backgroundTintColor="@color/white"
                         android:textStyle="bold" />
 
-                </io.github.florent37.shapeofview.shapes.RoundRectView>
+                </dev.kobalt.callblock.view.RoundRectangleView>
 
 
             </dev.kobalt.callblock.view.VerticalStackView>
@@ -85,7 +85,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
-            android:text="Calls"
+            android:text="@string/calls_title"
             android:textColor="@color/primary_normal"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -112,7 +112,7 @@
                     <dev.kobalt.callblock.view.LabelView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Blocked"
+                        android:text="@string/calls_blocked_title"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -148,7 +148,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:text="Warned"
+                        android:text="@string/calls_warned_title"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -184,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:text="Allowed"
+                        android:text="@string/calls_allowed_title"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -209,7 +209,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="4dp"
-            android:text="Rules"
+            android:text="@string/overview_rules_title"
             android:textColor="@color/primary_normal"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -236,7 +236,7 @@
                     <dev.kobalt.callblock.view.LabelView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Predefined"
+                        android:text="@string/overview_rules_predefined_title"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 
@@ -272,7 +272,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
-                        android:text="User"
+                        android:text="@string/overview_rules_user_title"
                         android:textColor="@color/black"
                         android:textSize="14sp" />
 

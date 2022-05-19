@@ -35,15 +35,15 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
     private fun showPermissionDialogIfDenied(permissions: Map<String, Boolean>) {
         if (permissions.any { !it.value && !shouldShowRequestPermissionRationale(it.key) }) {
             AlertDialog.Builder(requireContext()).apply {
-                setTitle("Information")
+                setTitle(getString(R.string.permissions_denied_dialog_title))
                 setMessage(
                     when (permissions.count { !it.value }) {
-                        1 -> "Requested permission was not granted. To grant this permission, you may have to open application info where you can grant it. Would you like to open it now?"
-                        else -> "Not all requested permissions were granted. To grant these permissions, you may have to open application info where you can grant it. Would you like to open it now?"
+                        1 -> getString(R.string.permissions_denied_dialog_single_message)
+                        else -> getString(R.string.permissions_denied_dialog_multiple_message)
                     }
                 )
-                setPositiveButton("Yes") { _, _ -> requireContext().launchAppInfo() }
-                setNegativeButton("No") { _, _ -> }
+                setPositiveButton(getString(R.string.permissions_denied_dialog_confirm_action)) { _, _ -> requireContext().launchAppInfo() }
+                setNegativeButton(getString(R.string.permissions_denied_dialog_cancel_action)) { _, _ -> }
             }.show()
         }
     }
@@ -132,7 +132,7 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
                 ) else it
             }.forEach {
                 it.first.optionButton.text = requireContext().getString(
-                    if (it.second) R.string.permission_item_granted_action else R.string.permission_item_grant_action
+                    if (it.second) R.string.permissions_item_granted_action else R.string.permissions_item_grant_action
                 )
                 it.first.optionButton.setTextColor(
                     requireContext().getResourceColor(

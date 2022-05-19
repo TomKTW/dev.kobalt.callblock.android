@@ -1,28 +1,36 @@
 <resources>
     <string name="app_name">CallBlock</string>
-    <string name="home_permissions_title">Required permissions</string>
-    <string name="home_detect_permissions_message">To detect suspicious calls, we need permissions to read phone state and call logs.</string>
-    <string name="home_contacts_permissions_message">To allow calls from contacts only, we need permissions to read contacts.</string>
-    <string name="home_permissions_request_action">Request permissions</string>
-    <string name="home_permissions_not_granted_title">Permissions not granted</string>
-    <string name="home_permissions_not_granted_message">Detecting unwanted calls will not function without any of requested permissions. Permission to read call logs is required to receive phone number from incoming call, while the permissino for reading phone state is required to receive incoming call requests.</string>
-    <string name="home_permissions_denied_title">Permissions denied</string>
-    <string name="home_permissions_denied_message">Some or all requested permissions have been denied. If you want to grant required permissions, you\'ll have to open application info where you can update your given permissions. Would you like to open app info of this application?</string>
-    <string name="home_permissions_contacts_not_granted_title">Permission not granted</string>
-    <string name="home_permissions_contacts_not_granted_message">Allowing calls only from contacts is not available unless requested permission is given. Permission to read contacts is required to find a contact that has a phone number from incoming call.</string>
-    <string name="home_permissions_contacts_denied_title">Permission denied</string>
-    <string name="home_permissions_contacts_denied_message">Requested permission for reading contacts has been denied. If you want to grant required permission, you\'ll have to open application info where you can update your given permissions. Would you like to open app info of this application?</string>
-    <string name="home_permissions_not_granted_close_action">Close</string>
-    <string name="home_permissions_denied_yes_action">Yes</string>
-    <string name="home_permissions_denied_no_action">No</string>
-    <string name="home_detect_title">Detecting suspicious calls</string>
-    <string name="home_contacts_title">Allowing only contacts</string>
 
     <string name="call_broadcast_warning_message">Incoming call warning</string>
-    <string name="call_empty_message">There are no logged incoming calls.\n\nIncoming calls will be added to this list when they occur.</string>
-    <string name="call_item_action_allow_value">Allowed</string>
-    <string name="call_item_action_warn_value">Warned</string>
-    <string name="call_item_action_block_value">Blocked</string>
+
+    <string name="overview_title">Overview</string>
+    <string name="overview_required_permissions_title">Required permissions</string>
+    <string name="overview_required_permissions_message">To enable functionality of this application, you\'ll have to grant permissions required for screening calls.</string>
+    <string name="overview_required_permissions_review_action">Review</string>
+    <string name="overview_rules_title">Rules</string>
+    <string name="overview_rules_predefined_title">Predefined</string>
+    <string name="overview_rules_user_title">User</string>
+
+    <string name="calls_title">Calls</string>
+    <string name="calls_blocked_title">Blocked</string>
+    <string name="calls_warned_title">Warned</string>
+    <string name="calls_allowed_title">Allowed</string>
+    <string name="calls_empty_message">There are no logged incoming calls.\n\nIncoming calls will be added to this list when they occur.</string>
+    <string name="calls_item_action_allow_value">Allowed</string>
+    <string name="calls_item_action_warn_value">Warned</string>
+    <string name="calls_item_action_block_value">Blocked</string>
+
+    <string name="options_title">Options</string>
+    <string name="options_predefined_rule_title">Use predefined rules</string>
+    <string name="options_predefined_rule_subtitle">Incoming calls will be checked with predefined rules.</string>
+    <string name="options_contact_rule_title">Allow calls from contacts only</string>
+    <string name="options_contact_rule_subtitle">Incoming calls will be blocked if they are not in contacts.</string>
+    <string name="options_user_rule_subtitle">Incoming calls will be checked with user defined rules. These rules override predefined and contact only rules.</string>
+    <string name="options_user_rule_title">Use user defined rules</string>
+    <string name="options_user_edit_subtitle">Modify user defined list of rules.</string>
+    <string name="options_user_edit_title">Edit user rules</string>
+    <string name="options_permissions_subtitle">Check and grant required permissions.</string>
+    <string name="options_permissions_title">Review permissions</string>
 
     <string name="rule_title">Rules</string>
     <string name="rule_empty_message">There are no defined rules.\n\nTo add a new rule, press the add button on top-right side of this window.</string>
@@ -33,6 +41,10 @@
 
     <string name="rule_edit_add_title">Add</string>
     <string name="rule_edit_edit_title">Edit</string>
+    <string name="rule_edit_phone_number_hint">Phone number</string>
+    <string name="rule_edit_allow_action">Allow</string>
+    <string name="rule_edit_warn_action">Warn</string>
+    <string name="rule_edit_block_action">Block</string>
     <string name="rule_edit_delete_prompt_title">Confirm</string>
     <string name="rule_edit_delete_prompt_message">Are you sure you want to delete this rule?</string>
     <string name="rule_edit_delete_prompt_confirm_action">Yes</string>
@@ -43,11 +55,29 @@
     <string name="rule_edit_submit_phone_number_invalid_prompt_message">This phone number might not be valid. Are you sure you want to save changes?</string>
     <string name="rule_edit_submit_phone_number_invalid_prompt_confirm_action">Yes</string>
     <string name="rule_edit_submit_phone_number_invalid_prompt_cancel_action">No</string>
-    <string name="home_overview_title">Overview</string>
-    <string name="home_calls_title">Calls</string>
-    <string name="home_options_title">Options</string>
-    <string name="rule_edit_phone_number_hint">Phone number</string>
-    <string name="permission_item_grant_action">Grant</string>
-    <string name="permission_item_granted_action">Granted</string>
+    <string name="rule_edit_save_already_exists_message">Rule with given phone number already exists.</string>
+    <string name="rule_edit_save_failure_message">Rule couldn\'t be saved properly.</string>
+
+    <string name="permissions_title">Permissions</string>
+    <string name="permissions_grant_all_action">Grant all</string>
+    <string name="permissions_default_dialer_title">Default dialer</string>
+    <string name="permissions_default_dialer_subtitle">To check incoming calls, this system requires that this application is set as default dialer.</string>
+    <string name="permissions_read_phone_state_subtitle">This permission is required to retrieve incoming calls.</string>
+    <string name="permissions_read_phone_state_title">Read phone state</string>
+    <string name="permissions_read_call_logs_subtitle">This permission is required to retrieve phone number from incoming calls.</string>
+    <string name="permissions_read_call_logs_title">Read call logs</string>
+    <string name="permissions_read_contacts_subtitle">This permission is required to check if phone number from incoming call exists in contacts.</string>
+    <string name="permissions_read_contacts_title">Read contacts</string>
+    <string name="permissions_call_phone_subtitle">This permission is required to end incoming call.</string>
+    <string name="permissions_call_phone_title">Call phone</string>
+    <string name="permissions_answer_phone_calls_subtitle">This permission is required to drop incoming call.</string>
+    <string name="permissions_answer_phone_calls_title">Answer phone calls</string>
+    <string name="permissions_item_grant_action">Grant</string>
+    <string name="permissions_item_granted_action">Granted</string>
+    <string name="permissions_denied_dialog_title">Information</string>
+    <string name="permissions_denied_dialog_single_message">Requested permission was not granted. To grant this permission, you may have to open application info where you can grant it. Would you like to open it now?</string>
+    <string name="permissions_denied_dialog_multiple_message">Not all requested permissions were granted. To grant these permissions, you may have to open application info where you can grant it. Would you like to open it now?</string>
+    <string name="permissions_denied_dialog_confirm_action">Yes</string>
+    <string name="permissions_denied_dialog_cancel_action">No</string>
 
 </resources>

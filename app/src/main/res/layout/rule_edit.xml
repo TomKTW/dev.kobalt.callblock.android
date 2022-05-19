@@ -70,7 +70,7 @@
         android:layout_marginEnd="16dp"
         android:background="@color/black_a50" />
 
-    <io.github.florent37.shapeofview.shapes.RoundRectView
+    <dev.kobalt.callblock.view.RoundRectangleView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
@@ -93,7 +93,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="12dp"
-                android:text="Allow" />
+                android:text="@string/rule_edit_allow_action" />
 
             <dev.kobalt.callblock.view.FrameView
                 android:layout_width="1dp"
@@ -107,7 +107,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="12dp"
-                android:text="Warn" />
+                android:text="@string/rule_edit_warn_action" />
 
             <dev.kobalt.callblock.view.FrameView
                 android:layout_width="1dp"
@@ -121,11 +121,11 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="12dp"
-                android:text="Block" />
+                android:text="@string/rule_edit_block_action" />
 
         </dev.kobalt.callblock.view.HorizontalStackView>
 
-    </io.github.florent37.shapeofview.shapes.RoundRectView>
+    </dev.kobalt.callblock.view.RoundRectangleView>
 
 
 </dev.kobalt.callblock.view.VerticalStackView>

@@ -102,9 +102,9 @@ class CallRecyclerView @JvmOverloads constructor(
                             titleLabel.text =
                                 item?.number?.let { root.context.internationalPhoneNumber(it) }
                             subtitleLabel.text = when (item?.action) {
-                                CallEntity.Action.Allow -> root.context.getString(R.string.call_item_action_allow_value)
-                                CallEntity.Action.Warn -> root.context.getString(R.string.call_item_action_warn_value)
-                                CallEntity.Action.Block -> root.context.getString(R.string.call_item_action_block_value)
+                                CallEntity.Action.Allow -> root.context.getString(R.string.calls_item_action_allow_value)
+                                CallEntity.Action.Warn -> root.context.getString(R.string.calls_item_action_warn_value)
+                                CallEntity.Action.Block -> root.context.getString(R.string.calls_item_action_block_value)
                                 // If value is by any chance anything else, treat it as undetermined.
                                 null -> root.context.getString(R.string.rule_item_action_undetermined_value)
                             }

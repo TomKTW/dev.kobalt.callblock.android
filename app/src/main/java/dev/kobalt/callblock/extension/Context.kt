@@ -168,11 +168,13 @@ fun Context.isGrantedToAllowContactCallsOnly() =
         Manifest.permission.READ_CONTACTS
     )
 
+/** Returns normalized phone number in E164 format. */
 fun Context.normalizePhoneNumber(value: String): String? {
     return application.phoneNumberUtil.parse(value, Locale.getDefault().country)
         ?.let { application.phoneNumberUtil.format(it, PhoneNumberUtil.PhoneNumberFormat.E164) }
 }
 
+/** Returns phone number in international format. */
 fun Context.internationalPhoneNumber(value: String): String? {
     return application.phoneNumberUtil.parse(value, Locale.getDefault().country)?.let {
         application.phoneNumberUtil.format(

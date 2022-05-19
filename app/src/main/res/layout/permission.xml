@@ -27,7 +27,7 @@
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:gravity="start"
-            android:text="Permissions"
+            android:text="@string/permissions_title"
             android:textColor="@color/primary_normal"
             android:textSize="20sp"
             android:textStyle="bold" />
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:padding="16dp"
-            android:text="Grant all"
+            android:text="@string/permissions_grant_all_action"
             android:textAllCaps="true"
             android:textColor="@color/primary_normal"
             android:textStyle="bold"
@@ -60,8 +60,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                app:subtitleLabel="To check incoming calls, this system requires that this application is set as default dialer."
-                app:titleLabel="Default dialer"
+                app:subtitleLabel="@string/permissions_default_dialer_subtitle"
+                app:titleLabel="@string/permissions_default_dialer_title"
                 app:visibleButton="true" />
 
             <dev.kobalt.callblock.view.FrameView
@@ -75,8 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                app:subtitleLabel="This permission is required to retrieve incoming calls."
-                app:titleLabel="Read phone state"
+                app:subtitleLabel="@string/permissions_read_phone_state_subtitle"
+                app:titleLabel="@string/permissions_read_phone_state_title"
                 app:visibleButton="true" />
 
             <dev.kobalt.callblock.view.FrameView
@@ -90,8 +90,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                app:subtitleLabel="This permission is required to retrieve phone number from incoming calls."
-                app:titleLabel="Read call logs"
+                app:subtitleLabel="@string/permissions_read_call_logs_subtitle"
+                app:titleLabel="@string/permissions_read_call_logs_title"
                 app:visibleButton="true" />
 
             <dev.kobalt.callblock.view.FrameView
@@ -105,8 +105,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                app:subtitleLabel="This permission is required to check if phone number from incoming call exists in contacts."
-                app:titleLabel="Read contacts"
+                app:subtitleLabel="@string/permissions_read_contacts_subtitle"
+                app:titleLabel="@string/permissions_read_contacts_title"
                 app:visibleButton="true" />
 
             <dev.kobalt.callblock.view.FrameView
@@ -120,8 +120,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                app:subtitleLabel="This permission is required to end incoming call."
-                app:titleLabel="Call phone"
+                app:subtitleLabel="@string/permissions_call_phone_subtitle"
+                app:titleLabel="@string/permissions_call_phone_title"
                 app:visibleButton="true" />
 
             <dev.kobalt.callblock.view.FrameView
@@ -135,8 +135,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="12dp"
-                app:subtitleLabel="This permission is required to drop incoming call."
-                app:titleLabel="Answer phone calls"
+                app:subtitleLabel="@string/permissions_answer_phone_calls_subtitle"
+                app:titleLabel="@string/permissions_answer_phone_calls_title"
                 app:visibleButton="true" />
 
             <dev.kobalt.callblock.view.FrameView

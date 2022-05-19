@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            app:subtitleLabel="Incoming calls will be checked with predefined rules."
-            app:titleLabel="Use predefined rules"
+            app:subtitleLabel="@string/options_predefined_rule_subtitle"
+            app:titleLabel="@string/options_predefined_rule_title"
             app:visibleSwitch="true" />
 
         <dev.kobalt.callblock.view.FrameView
@@ -28,8 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            app:subtitleLabel="Incoming calls will be blocked if they are not in contacts."
-            app:titleLabel="Allow calls from contacts only"
+            app:subtitleLabel="@string/options_contact_rule_subtitle"
+            app:titleLabel="@string/options_contact_rule_title"
             app:visibleSwitch="true" />
 
         <dev.kobalt.callblock.view.FrameView
@@ -43,8 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            app:subtitleLabel="Incoming calls will be checked with user defined rules. These rules override predefined and contact only rules."
-            app:titleLabel="Use user defined rules"
+            app:subtitleLabel="@string/options_user_rule_subtitle"
+            app:titleLabel="@string/options_user_rule_title"
             app:visibleSwitch="true" />
 
         <dev.kobalt.callblock.view.FrameView
@@ -58,8 +58,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            app:subtitleLabel="Modify user defined list of rules."
-            app:titleLabel="Edit user rules" />
+            app:subtitleLabel="@string/options_user_edit_subtitle"
+            app:titleLabel="@string/options_user_edit_title" />
 
         <dev.kobalt.callblock.view.FrameView
             android:layout_width="match_parent"
@@ -72,8 +72,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="12dp"
-            app:subtitleLabel="Check and grant required permissions."
-            app:titleLabel="Review permissions" />
+            app:subtitleLabel="@string/options_permissions_subtitle"
+            app:titleLabel="@string/options_permissions_title" />
 
         <dev.kobalt.callblock.view.FrameView
             android:layout_width="match_parent"

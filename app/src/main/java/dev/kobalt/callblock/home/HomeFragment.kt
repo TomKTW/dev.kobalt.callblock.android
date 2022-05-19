@@ -28,9 +28,9 @@ class HomeFragment : BaseFragment<HomeBinding>() {
             viewModel.pageState.collect {
                 viewBinding?.apply {
                     headerTitleLabel.text = when (it) {
-                        Page.Overview -> requireContext().getString(R.string.home_overview_title)
-                        Page.Calls -> requireContext().getString(R.string.home_calls_title)
-                        Page.Options -> requireContext().getString(R.string.home_options_title)
+                        Page.Overview -> requireContext().getString(R.string.overview_title)
+                        Page.Calls -> requireContext().getString(R.string.calls_title)
+                        Page.Options -> requireContext().getString(R.string.options_title)
                     }
                     overviewContainer.root.isVisible = it == Page.Overview
                     callsContainer.root.isVisible = it == Page.Calls

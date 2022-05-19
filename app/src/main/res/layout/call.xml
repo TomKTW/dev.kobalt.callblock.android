@@ -11,7 +11,7 @@
         android:layout_margin="32dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:text="@string/call_empty_message" />
+        android:text="@string/calls_empty_message" />
 
     <dev.kobalt.callblock.call.CallRecyclerView
         android:id="@+id/listRecycler"
