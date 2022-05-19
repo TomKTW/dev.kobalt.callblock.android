@@ -13,7 +13,7 @@ class PreferencesRepository {
 
     /** State for applying predefined rules. */
     var usePredefinedRules: Boolean
-        get() = instance.getBoolean("usePredefinedRules", false)
+        get() = instance.getBoolean("usePredefinedRules", true)
         set(value) {
             instance.edit()?.putBoolean("usePredefinedRules", value)?.apply()
         }

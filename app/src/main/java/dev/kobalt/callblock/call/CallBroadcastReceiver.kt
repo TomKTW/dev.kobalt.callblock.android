@@ -2,6 +2,7 @@ package dev.kobalt.callblock.call
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.telephony.TelephonyManager
 import dev.kobalt.callblock.R
 import dev.kobalt.callblock.base.BaseBroadcastReceiver
@@ -28,8 +29,10 @@ class CallBroadcastReceiver : BaseBroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent): Unit = context.run {
         when (intent.action) {
             "android.intent.action.PHONE_STATE" -> application.scope.launch(Dispatchers.IO) {
-                // Proceed only if application is not default dialer (it should be processed by call screening service) and incoming call is ringing.
-                if (!isDefaultDialer() && intent.isIncomingCallRinging) {
+                // Proceed only if application is not default dialer on Android N+ (call screening service will take over).
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isDefaultDialer()) return@launch
+                // Proceed only incoming call is ringing.
+                if (intent.isIncomingCallRinging) {
                     // Normalize phone number value.
                     intent.incomingCallNumber?.toPhoneNumber()?.toStringFormat()?.let { number ->
                         /** Adds call log to database. */

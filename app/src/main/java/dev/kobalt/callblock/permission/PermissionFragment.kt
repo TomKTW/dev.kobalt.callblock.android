@@ -49,7 +49,8 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
     }
 
     private fun showDefaultDialerDialog() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        // Ask for default dialer only on Android N+ to use call screening features for it.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             startActivity(Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER).apply {
                 putExtra(
                     TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME,
@@ -67,12 +68,7 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
             }
             grantAllButton.apply {
                 isVisible =
-                    !(requireContext().isDefaultDialer() && requireContext().areAllPermissionsGranted(
-                        Manifest.permission.READ_PHONE_STATE,
-                        Manifest.permission.READ_CALL_LOG,
-                        Manifest.permission.READ_CONTACTS,
-                        Manifest.permission.CALL_PHONE
-                    ))
+                    !context.isGrantedForCallScreening() || !context.isGrantedToAllowContactCallsOnly()
                 setOnClickListener {
                     grantAllRequest.launch(
                         arrayOf(
@@ -90,7 +86,8 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
                 }
             }
             defaultDialerOption.apply {
-                isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                // Show default dialer option only on Android N+ to use call screening features for it.
+                isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
                 setOnClickListener {
                     showDefaultDialerDialog()
                 }

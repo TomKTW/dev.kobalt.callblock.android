@@ -122,20 +122,43 @@ fun Context.launchAppInfo(packageName: String = this.packageName) {
 }
 
 /** Returns true if this application is treated as default dialer. */
-fun Context.isDefaultDialer() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-    telecomManager.defaultDialerPackage == packageName
-} else {
-    false
+fun Context.isDefaultDialer() = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+        telecomManager.defaultDialerPackage == packageName
+    }
+    else -> {
+        false
+    }
 }
 
 /** Returns true if it meets all conditions to screen calls. */
-fun Context.isGrantedForCallScreening() = areAllPermissionsGranted(
-    Manifest.permission.READ_PHONE_STATE,
-    Manifest.permission.READ_CALL_LOG,
-    Manifest.permission.CALL_PHONE
-) && isDefaultDialer() && if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-    isPermissionGranted(Manifest.permission.ANSWER_PHONE_CALLS)
-} else true
+fun Context.isGrantedForCallScreening() = when {
+    // Android O+ Requires answering phone calls permission.
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> areAllPermissionsGranted(
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_CALL_LOG,
+        Manifest.permission.CALL_PHONE,
+        Manifest.permission.ANSWER_PHONE_CALLS
+    ) && isDefaultDialer()
+    // Android N+ has call screening that should be used when default dialer is enabled.
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> areAllPermissionsGranted(
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_CALL_LOG,
+        Manifest.permission.CALL_PHONE
+    ) && isDefaultDialer()
+    // Android M+ has runtime permissions that require following permissions to be granted.
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> areAllPermissionsGranted(
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_CALL_LOG,
+        Manifest.permission.CALL_PHONE
+    )
+    // Android L+ should check at least if application has these permissions.
+    else -> areAllPermissionsGranted(
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_CALL_LOG,
+        Manifest.permission.CALL_PHONE
+    )
+}
 
 /** Returns true if it meets all conditions to allow incoming calls from contacts only. */
 fun Context.isGrantedToAllowContactCallsOnly() =
