@@ -1,6 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package dev.kobalt.callblock.extension
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,12 +18,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.getSystemService
 import dev.kobalt.callblock.main.MainApplication
-
 
 /** Instance of main application. */
 val Context.application get() = applicationContext as MainApplication
@@ -39,30 +41,30 @@ fun Context.showToast(message: String, length: Int = Toast.LENGTH_SHORT) {
     Toast.makeText(applicationContext, message, length).show()
 }
 
-/** Terminates currently active call. */
+// Permission check is done before this method is run, but adding it in here makes it ugly to use.
+@RequiresApi(Build.VERSION_CODES.P)
+@SuppressLint("MissingPermission")
+/** Terminate the call if it's active.*/
+private fun TelecomManager.terminateCallIfActive() = if (isInCall) endCall() else false
+
+/** Terminates currently active call and returns true if termination was successful. */
 fun Context.terminateCall(): Boolean {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ANSWER_PHONE_CALLS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            false
-        } else {
-            @Suppress("DEPRECATION")
-            telecomManager.takeIf { it.isInCall }?.endCall() ?: false
+    return when {
+        // On Android P+, require phone call answer permission before ending the call.
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> when {
+            isPermissionGranted(Manifest.permission.ANSWER_PHONE_CALLS) -> telecomManager.terminateCallIfActive()
+            else -> false
         }
-    } else {
-        return runCatching {
+        // On Android O-, terminate the call through reflection. This may fail due to API restrictions.
+        else -> return runCatching {
             val telephonyManager = this.telephonyManager
-            val classTelephonyManager = Class.forName(telephonyManager.javaClass.name)
-            val methodGetITelephony =
-                classTelephonyManager.getDeclaredMethod("getITelephony").also {
-                    it.isAccessible = true
-                }
-            val telephony = methodGetITelephony.invoke(telephonyManager)
-            val classTelephony = Class.forName(telephony.javaClass.name)
-            classTelephony.getDeclaredMethod("endCall").invoke(telephony)
+            val telephonyClass = Class.forName(telephonyManager.javaClass.name)
+            val methodGetITelephony = telephonyClass.getDeclaredMethod("getITelephony").also {
+                it.isAccessible = true
+            }
+            val iTelephony = methodGetITelephony.invoke(telephonyManager)
+            val iTelephonyClass = Class.forName(iTelephony.javaClass.name)
+            iTelephonyClass.getDeclaredMethod("endCall").invoke(iTelephony)
             true
         }.getOrElse {
             it.printStackTrace()
@@ -119,12 +121,14 @@ fun Context.launchAppInfo(packageName: String = this.packageName) {
     })
 }
 
+/** Returns true if this application is treated as default dialer. */
 fun Context.isDefaultDialer() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
     telecomManager.defaultDialerPackage == packageName
 } else {
     false
 }
 
+/** Returns true if it meets all conditions to screen calls. */
 fun Context.isGrantedForCallScreening() = areAllPermissionsGranted(
     Manifest.permission.READ_PHONE_STATE,
     Manifest.permission.READ_CALL_LOG,
@@ -133,6 +137,7 @@ fun Context.isGrantedForCallScreening() = areAllPermissionsGranted(
     isPermissionGranted(Manifest.permission.ANSWER_PHONE_CALLS)
 } else true
 
+/** Returns true if it meets all conditions to allow incoming calls from contacts only. */
 fun Context.isGrantedToAllowContactCallsOnly() =
     isGrantedForCallScreening() && areAllPermissionsGranted(
         Manifest.permission.READ_CONTACTS

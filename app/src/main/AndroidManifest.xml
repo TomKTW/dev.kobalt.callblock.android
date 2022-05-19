@@ -40,7 +40,7 @@
         <receiver
             android:name=".call.CallBroadcastReceiver"
             android:exported="false">
-            <intent-filter>
+            <intent-filter android:priority="1000">
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>

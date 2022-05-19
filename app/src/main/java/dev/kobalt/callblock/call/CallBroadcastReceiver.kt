@@ -16,72 +16,48 @@ import java.time.LocalDateTime
 /** Broadcast receiver for incoming calls. */
 class CallBroadcastReceiver : BaseBroadcastReceiver() {
 
-    override fun onReceive(context: Context, intent: Intent) {
-        // If application is treated as default dialer, skip checking and let call screening service process the call request.
-        if (context.isDefaultDialer()) {
-            // Note that broadcast may be received twice. Second broadcast may contain phone number that will be normalized.
-            if (intent.action == "android.intent.action.PHONE_STATE") context.application.scope.launch(
-                Dispatchers.IO
-            ) {
-                // Proceed only if incoming call is ringing.
-                if (intent.extras?.getString(TelephonyManager.EXTRA_STATE) == TelephonyManager.EXTRA_STATE_RINGING) {
-                    @Suppress("DEPRECATION")
-                    // Convert number string to phone number and back to normalized string format for consistency purposes.
-                    intent.extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)
-                        ?.toPhoneNumber()
-                        ?.toStringFormat()?.let { number ->
-                            // Get the action for given phone number to take specific action.
-                            context.application.ruleRepository.getItemActionForPhoneNumber(number)
-                                .let { action ->
-                                    when (action) {
-                                        RuleEntity.Action.Warn -> {
-                                            val success = withContext(Dispatchers.Main) {
-                                                context.showToast(
-                                                    context.getString(
-                                                        R.string.call_broadcast_warning_message
-                                                    )
-                                                )
-                                                true
-                                            }
-                                            logCall(
-                                                context,
-                                                number,
-                                                if (success) CallEntity.Action.Warn else CallEntity.Action.Allow
-                                            )
-                                        }
-                                        RuleEntity.Action.Block -> {
-                                            val success = withContext(Dispatchers.Main) {
-                                                context.terminateCall()
-                                            }
-                                            logCall(
-                                                context, number, if (success) {
-                                                    CallEntity.Action.Block
-                                                } else {
-                                                    CallEntity.Action.Allow
-                                                }
-                                            )
-                                        }
-                                        RuleEntity.Action.Allow ->
-                                            logCall(context, number, CallEntity.Action.Allow)
-                                    }
-                                }
-                        }
-                }
+    @Suppress("DEPRECATION")
+    /** Phone number of incoming call. Note: Broadcast may be received twice any only second one may have this value.*/
+    private val Intent.incomingCallNumber
+        get() = extras?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)
 
+    /** Ring state of incoming call. It's true if incoming call is ringing. */
+    private val Intent.isIncomingCallRinging
+        get() = extras?.getString(TelephonyManager.EXTRA_STATE) == TelephonyManager.EXTRA_STATE_RINGING
+
+    override fun onReceive(context: Context, intent: Intent): Unit = context.run {
+        when (intent.action) {
+            "android.intent.action.PHONE_STATE" -> application.scope.launch(Dispatchers.IO) {
+                // Proceed only if application is not default dialer (it should be processed by call screening service) and incoming call is ringing.
+                if (!isDefaultDialer() && intent.isIncomingCallRinging) {
+                    // Normalize phone number value.
+                    intent.incomingCallNumber?.toPhoneNumber()?.toStringFormat()?.let { number ->
+                        /** Adds call log to database. */
+                        fun log(action: CallEntity.Action?) = application.callRepository.insertItem(
+                            CallEntity(null, number.toPhoneNumber(), action, LocalDateTime.now())
+                        )
+                        // Get, log and apply action for given phone number.
+                        when (application.ruleRepository.getItemActionForPhoneNumber(number)) {
+                            // No action taken.
+                            RuleEntity.Action.Allow -> log(CallEntity.Action.Allow)
+                            // Warn about call.
+                            RuleEntity.Action.Warn -> {
+                                withContext(Dispatchers.Main) {
+                                    showToast(getString(R.string.call_broadcast_warning_message))
+                                }
+                                log(CallEntity.Action.Warn)
+                            }
+                            // Attempt to terminate call. In case of failure, log as undetermined action.
+                            RuleEntity.Action.Block -> {
+                                val success = withContext(Dispatchers.Main) {
+                                    context.terminateCall()
+                                }
+                                log(if (success) CallEntity.Action.Block else null)
+                            }
+                        }
+                    }
+                }
             }
         }
     }
-
-    fun logCall(context: Context, number: String, action: CallEntity.Action) {
-        context.application.callRepository.insertItem(
-            CallEntity(
-                null,
-                number.toPhoneNumber(),
-                action,
-                LocalDateTime.now()
-            )
-        )
-    }
-
 }
-

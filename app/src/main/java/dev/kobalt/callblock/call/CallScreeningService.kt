@@ -1,6 +1,5 @@
 package dev.kobalt.callblock.call
 
-import android.content.Context
 import android.os.Build
 import android.telecom.Call
 import android.telecom.CallScreeningService
@@ -20,62 +19,46 @@ import java.time.LocalDateTime
 @RequiresApi(Build.VERSION_CODES.N)
 class CallScreeningService : CallScreeningService() {
 
+    /** Phone number of incoming call. This is basically a scheme specific part of URI (number without "tel:" part). */
+    private val Call.Details.incomingCallNumber
+        get() = handle.schemeSpecificPart
+
     override fun onScreenCall(callDetails: Call.Details) {
         applicationContext.application.apply {
             scope.launch(Dispatchers.IO) {
-                // Normalize number value.
-                callDetails.handle.schemeSpecificPart?.toPhoneNumber()?.toStringFormat()
-                    ?.let { number ->
-                        fun logCall(context: Context, number: String, action: CallEntity.Action) {
-                            context.application.callRepository.insertItem(
-                                CallEntity(
-                                    null,
-                                    number.toPhoneNumber(),
-                                    action,
-                                    LocalDateTime.now()
-                                )
-                            )
+                // Normalize phone number value.
+                callDetails.incomingCallNumber?.toPhoneNumber()?.toStringFormat()?.let { number ->
+                    /** Adds call log to database. */
+                    fun log(action: CallEntity.Action?) = application.callRepository.insertItem(
+                        CallEntity(null, number.toPhoneNumber(), action, LocalDateTime.now())
+                    )
+                    // Get, log and apply action for given phone number.
+                    when (application.ruleRepository.getItemActionForPhoneNumber(number)) {
+                        // No action taken.
+                        RuleEntity.Action.Allow -> {
+                            respondToCall(callDetails, CallResponse.Builder().build())
+                            log(CallEntity.Action.Allow)
                         }
-
-                        suspend fun terminateCall() {
+                        // Warn about call.
+                        RuleEntity.Action.Warn -> {
+                            respondToCall(callDetails, CallResponse.Builder().build())
                             withContext(Dispatchers.Main) {
-                                respondToCall(
-                                    callDetails,
-                                    CallResponse.Builder().setDisallowCall(true).setRejectCall(true)
-                                        .setSkipNotification(true).setSkipCallLog(true).build()
-                                )
+                                showToast(getString(R.string.call_broadcast_warning_message))
                             }
-                            logCall(applicationContext, number, CallEntity.Action.Block)
+                            log(CallEntity.Action.Warn)
                         }
-
-                        suspend fun warnCall() {
-                            withContext(Dispatchers.Main) {
-                                applicationContext.showToast(
-                                    applicationContext.getString(
-                                        R.string.call_broadcast_warning_message
-                                    )
-                                )
-                                respondToCall(
-                                    callDetails,
-                                    CallResponse.Builder().build()
-                                )
-                            }
-                            logCall(applicationContext, number, CallEntity.Action.Warn)
-                        }
-
-                        fun allowCall() {
-                            respondToCall(
-                                callDetails,
-                                CallResponse.Builder().build()
-                            )
-                            logCall(applicationContext, number, CallEntity.Action.Allow)
-                        }
-                        when (ruleRepository.getItemActionForPhoneNumber(number)) {
-                            RuleEntity.Action.Warn -> warnCall()
-                            RuleEntity.Action.Block -> terminateCall()
-                            RuleEntity.Action.Allow -> allowCall()
+                        // End the call and skip any notification about it if possible.
+                        RuleEntity.Action.Block -> {
+                            respondToCall(callDetails, CallResponse.Builder().apply {
+                                setDisallowCall(true)
+                                setRejectCall(true)
+                                setSkipNotification(true)
+                                setSkipCallLog(true)
+                            }.build())
+                            log(CallEntity.Action.Block)
                         }
                     }
+                }
             }
         }
     }
