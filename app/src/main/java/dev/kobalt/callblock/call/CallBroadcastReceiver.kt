@@ -31,6 +31,8 @@ class CallBroadcastReceiver : BaseBroadcastReceiver() {
             "android.intent.action.PHONE_STATE" -> application.scope.launch(Dispatchers.IO) {
                 // Proceed only if application is not default dialer on Android N+ (call screening service will take over).
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && isDefaultDialer()) return@launch
+                // Proceed only if application doesn't have call screening role on Android Q+ (call screening service will take over).
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && hasCallScreeningRole()) return@launch
                 // Proceed only incoming call is ringing.
                 if (intent.isIncomingCallRinging) {
                     // Normalize phone number value.

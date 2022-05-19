@@ -1,6 +1,7 @@
 package dev.kobalt.callblock.permission
 
 import android.Manifest
+import android.app.role.RoleManager
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -32,6 +33,10 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
         ActivityResultContracts.RequestMultiplePermissions()
     ) { showPermissionDialogIfDenied(it) }
 
+    private val roleCallScreeningRequest = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { }
+
     private fun showPermissionDialogIfDenied(permissions: Map<String, Boolean>) {
         if (permissions.any { !it.value && !shouldShowRequestPermissionRationale(it.key) }) {
             AlertDialog.Builder(requireContext()).apply {
@@ -49,8 +54,8 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
     }
 
     private fun showDefaultDialerDialog() {
-        // Ask for default dialer only on Android N+ to use call screening features for it.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        // Ask for default dialer only on Android N-P to use call screening features for it.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             startActivity(Intent(TelecomManager.ACTION_CHANGE_DEFAULT_DIALER).apply {
                 putExtra(
                     TelecomManager.EXTRA_CHANGE_DEFAULT_DIALER_PACKAGE_NAME,
@@ -59,6 +64,18 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
             })
         }
     }
+
+    private fun showRoleCallScreeningRequestDialog() {
+        // Ask for call screening role only on Android Q+ to use call screening features for it.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            roleCallScreeningRequest.launch(
+                requireContext().roleManager.createRequestRoleIntent(
+                    RoleManager.ROLE_CALL_SCREENING
+                )
+            )
+        }
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -85,9 +102,17 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
                         })
                 }
             }
+            roleCallScreeningOption.apply {
+                // Show role call screening option only on Android Q+ to use call screening features for it.
+                isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+                setOnClickListener {
+                    showRoleCallScreeningRequestDialog()
+                }
+            }
             defaultDialerOption.apply {
                 // Show default dialer option only on Android N+ to use call screening features for it.
-                isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
+                isVisible =
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q
                 setOnClickListener {
                     showDefaultDialerDialog()
                 }
@@ -119,6 +144,7 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
         super.onResume()
         viewBinding?.apply {
             listOf(
+                roleCallScreeningOption to requireContext().hasCallScreeningRole(),
                 defaultDialerOption to requireContext().isDefaultDialer(),
                 readPhoneStateOption to requireContext().isPermissionGranted(Manifest.permission.READ_PHONE_STATE),
                 readCallLogsOption to requireContext().isPermissionGranted(Manifest.permission.READ_CALL_LOG),

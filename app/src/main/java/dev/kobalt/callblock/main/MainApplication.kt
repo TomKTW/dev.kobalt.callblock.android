@@ -41,6 +41,7 @@ class MainApplication : BaseApplication() {
         contactRepository = ContactRepository().also { it.context = this }
         preferencesRepository = PreferencesRepository().also { it.context = this }
         ruleRepository = RuleRepository().also {
+            it.context = this
             it.contactRepository = contactRepository
             it.preferencesRepository = preferencesRepository
             it.dao = databaseManager.database.ruleDao()

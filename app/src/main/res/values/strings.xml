@@ -79,5 +79,7 @@
     <string name="permissions_denied_dialog_multiple_message">Not all requested permissions were granted. To grant these permissions, you may have to open application info where you can grant it. Would you like to open it now?</string>
     <string name="permissions_denied_dialog_confirm_action">Yes</string>
     <string name="permissions_denied_dialog_cancel_action">No</string>
+    <string name="permissions_role_call_screening_title">Call screening role</string>
+    <string name="permissions_role_call_screening_subtitle">This role is used for call screening.</string>
 
 </resources>

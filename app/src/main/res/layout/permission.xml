@@ -47,7 +47,6 @@
     </dev.kobalt.callblock.view.HorizontalStackView>
 
     <dev.kobalt.callblock.view.VerticalScrollView
-
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -56,94 +55,60 @@
             android:layout_height="wrap_content">
 
             <dev.kobalt.callblock.view.OptionView
+                android:id="@+id/roleCallScreeningOption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:subtitleLabel="@string/permissions_role_call_screening_subtitle"
+                app:titleLabel="@string/permissions_role_call_screening_title"
+                app:visibleButton="true" />
+
+            <dev.kobalt.callblock.view.OptionView
                 android:id="@+id/defaultDialerOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 app:subtitleLabel="@string/permissions_default_dialer_subtitle"
                 app:titleLabel="@string/permissions_default_dialer_title"
                 app:visibleButton="true" />
-
-            <dev.kobalt.callblock.view.FrameView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.25"
-                android:background="@color/black" />
 
             <dev.kobalt.callblock.view.OptionView
                 android:id="@+id/readPhoneStateOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 app:subtitleLabel="@string/permissions_read_phone_state_subtitle"
                 app:titleLabel="@string/permissions_read_phone_state_title"
                 app:visibleButton="true" />
-
-            <dev.kobalt.callblock.view.FrameView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.25"
-                android:background="@color/black" />
 
             <dev.kobalt.callblock.view.OptionView
                 android:id="@+id/readCallLogsOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 app:subtitleLabel="@string/permissions_read_call_logs_subtitle"
                 app:titleLabel="@string/permissions_read_call_logs_title"
                 app:visibleButton="true" />
-
-            <dev.kobalt.callblock.view.FrameView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.25"
-                android:background="@color/black" />
 
             <dev.kobalt.callblock.view.OptionView
                 android:id="@+id/readContactsOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 app:subtitleLabel="@string/permissions_read_contacts_subtitle"
                 app:titleLabel="@string/permissions_read_contacts_title"
                 app:visibleButton="true" />
-
-            <dev.kobalt.callblock.view.FrameView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.25"
-                android:background="@color/black" />
 
             <dev.kobalt.callblock.view.OptionView
                 android:id="@+id/callPhoneOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 app:subtitleLabel="@string/permissions_call_phone_subtitle"
                 app:titleLabel="@string/permissions_call_phone_title"
                 app:visibleButton="true" />
-
-            <dev.kobalt.callblock.view.FrameView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.25"
-                android:background="@color/black" />
 
             <dev.kobalt.callblock.view.OptionView
                 android:id="@+id/answerPhoneCallsOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="12dp"
                 app:subtitleLabel="@string/permissions_answer_phone_calls_subtitle"
                 app:titleLabel="@string/permissions_answer_phone_calls_title"
                 app:visibleButton="true" />
-
-            <dev.kobalt.callblock.view.FrameView
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:alpha="0.25"
-                android:background="@color/black" />
 
         </dev.kobalt.callblock.view.VerticalStackView>
 

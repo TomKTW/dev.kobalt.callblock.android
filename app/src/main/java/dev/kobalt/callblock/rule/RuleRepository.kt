@@ -1,24 +1,34 @@
 package dev.kobalt.callblock.rule
 
+import android.content.Context
 import dev.kobalt.callblock.contact.ContactRepository
+import dev.kobalt.callblock.extension.normalizePhoneNumber
 import dev.kobalt.callblock.preferences.PreferencesRepository
 
 /** Repository for call rules. */
 class RuleRepository {
 
+    lateinit var context: Context
     lateinit var preferencesRepository: PreferencesRepository
     lateinit var contactRepository: ContactRepository
     lateinit var dao: RuleDao
 
-    /** List of pre-defined rules.*/
-    private val defaultRules = listOf(
-        RuleEntity(0, "4259501212", RuleEntity.Action.Warn, false),
-        RuleEntity(1, "2539501212", RuleEntity.Action.Block, false)
-    )
-
     /** Updates a list of predefined rules into database. */
     fun updateDefaultItems() {
-        defaultRules.forEach { updateItem(it) }
+        listOf(
+            RuleEntity(
+                0,
+                context.normalizePhoneNumber("4259501212"),
+                RuleEntity.Action.Warn,
+                false
+            ),
+            RuleEntity(
+                1,
+                context.normalizePhoneNumber("2539501212"),
+                RuleEntity.Action.Block,
+                false
+            )
+        ).forEach { updateItem(it) }
     }
 
     /** Returns rule from database with given ID. */

@@ -4,6 +4,7 @@ package dev.kobalt.callblock.extension
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.role.RoleManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -34,6 +35,9 @@ val Context.telecomManager get() = getSystemService<TelecomManager>()!!
 
 /** Instance of telephony manager. */
 val Context.telephonyManager get() = getSystemService<TelephonyManager>()!!
+
+/** Instance of role manager. */
+val Context.roleManager get() = getSystemService<RoleManager>()!!
 
 /** Instance of input method manager. */
 val Context.inputMethodManager get() = getSystemService<InputMethodManager>()!!
@@ -133,8 +137,24 @@ fun Context.isDefaultDialer() = when {
     }
 }
 
+fun Context.hasCallScreeningRole() = when {
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> {
+        roleManager.isRoleHeld(RoleManager.ROLE_CALL_SCREENING)
+    }
+    else -> {
+        false
+    }
+}
+
 /** Returns true if it meets all conditions to screen calls. */
 fun Context.isGrantedForCallScreening() = when {
+    // Android Q+ Requires call screening role.
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> areAllPermissionsGranted(
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.READ_CALL_LOG,
+        Manifest.permission.CALL_PHONE,
+        Manifest.permission.ANSWER_PHONE_CALLS
+    ) && hasCallScreeningRole()
     // Android O+ Requires answering phone calls permission.
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> areAllPermissionsGranted(
         Manifest.permission.READ_PHONE_STATE,

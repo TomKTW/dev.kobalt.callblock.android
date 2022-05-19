@@ -8,7 +8,10 @@ import android.graphics.drawable.shapes.RectShape
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.Gravity
+import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.core.view.isVisible
+import androidx.core.view.setPadding
 import dev.kobalt.callblock.R
 import dev.kobalt.callblock.extension.dp
 import dev.kobalt.callblock.extension.getResourceColor
@@ -19,7 +22,7 @@ open class OptionView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : HorizontalStackView(context, attrs, defStyleAttr) {
+) : FrameView(context, attrs, defStyleAttr) {
 
     val titleLabel = LabelView(context).apply {
         setTextColor(context.getResourceColor(R.color.black))
@@ -58,8 +61,6 @@ open class OptionView @JvmOverloads constructor(
     }
 
     private fun onInit(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
-        // Position all views to be centered.
-        gravity = Gravity.CENTER
         // Apply values from XML layouts.
         context.theme.obtainStyledAttributes(
             attrs,
@@ -83,11 +84,23 @@ open class OptionView @JvmOverloads constructor(
             addView(subtitleLabel)
             gravity = Gravity.CENTER
         }
-        // Add all views.
-        addView(labelStack, LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f))
-        addView(SpaceView(context), LayoutParams(context.dp(4), LayoutParams.MATCH_PARENT))
-        addView(optionSwitch)
-        addView(optionButton)
+        // Add all views to stack.
+        val horizontalStack = HorizontalStackView(context).apply {
+            // Position all views to be centered.
+            gravity = Gravity.CENTER
+            setPadding(context.dp(12))
+            addView(labelStack, LinearLayoutCompat.LayoutParams(0, LayoutParams.WRAP_CONTENT, 1.0f))
+            addView(SpaceView(context), LayoutParams(context.dp(4), LayoutParams.MATCH_PARENT))
+            addView(optionSwitch)
+            addView(optionButton)
+        }
+        addView(horizontalStack)
+        addView(FrameView(context).apply {
+            background = context.getResourceColor(R.color.black).toDrawable()
+            alpha = 0.25f
+        }, LayoutParams(LayoutParams.MATCH_PARENT, context.dp(1)).apply {
+            gravity = Gravity.BOTTOM
+        })
         // Apply ripple to background.
         background = RippleDrawable(
             ColorStateList.valueOf(context.getResourceColor(R.color.primary_normal)),
