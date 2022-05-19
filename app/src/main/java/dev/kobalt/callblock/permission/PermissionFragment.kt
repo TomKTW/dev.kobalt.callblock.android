@@ -19,24 +19,33 @@ import dev.kobalt.callblock.extension.*
 /** Fragment for managing permissions required for app functionality. */
 class PermissionFragment : BaseFragment<PermissionBinding>() {
 
+    /** Request for granting all needed permissions. */
     private val grantAllRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
+        // After permissions, request default dialer or role for call screening if needed.
         if (permissions.all { it.value }) {
-            showDefaultDialerDialog()
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                showDefaultDialerDialog()
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                showRoleCallScreeningRequestDialog()
+            }
         } else {
             showPermissionDialogIfDenied(permissions)
         }
     }
 
+    /** Request for granting a single permission. */
     private val grantSingleRequest = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { showPermissionDialogIfDenied(it) }
 
+    /** Request for getting a role for call screening. */
     private val roleCallScreeningRequest = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { }
 
+    /** Display a warning about denied permissions if they cannot be requested. */
     private fun showPermissionDialogIfDenied(permissions: Map<String, Boolean>) {
         if (permissions.any { !it.value && !shouldShowRequestPermissionRationale(it.key) }) {
             AlertDialog.Builder(requireContext()).apply {
@@ -53,6 +62,7 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
         }
     }
 
+    /** Display a dialog for setting a default dialer. */
     private fun showDefaultDialerDialog() {
         // Ask for default dialer only on Android N-P to use call screening features for it.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
@@ -65,6 +75,7 @@ class PermissionFragment : BaseFragment<PermissionBinding>() {
         }
     }
 
+    /** Display a dialog for getting a role for call screening. */
     private fun showRoleCallScreeningRequestDialog() {
         // Ask for call screening role only on Android Q+ to use call screening features for it.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {

@@ -148,26 +148,28 @@ fun Context.hasCallScreeningRole() = when {
 
 /** Returns true if it meets all conditions to screen calls. */
 fun Context.isGrantedForCallScreening() = when {
-    // Android Q+ Requires call screening role.
-    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> areAllPermissionsGranted(
+    // Android Q+ Requires at least having call screening role or permissions.
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q -> areAllPermissionsGranted(
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_CALL_LOG,
         Manifest.permission.CALL_PHONE,
         Manifest.permission.ANSWER_PHONE_CALLS
-    ) && hasCallScreeningRole()
-    // Android O+ Requires answering phone calls permission.
-    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> areAllPermissionsGranted(
+    ) || hasCallScreeningRole()
+    // Android P+ Requires at least being a default dialer or permissions.
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.P -> areAllPermissionsGranted(
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_CALL_LOG,
         Manifest.permission.CALL_PHONE,
         Manifest.permission.ANSWER_PHONE_CALLS
-    ) && isDefaultDialer()
+    ) || isDefaultDialer()
+    // Android O Requires being default dialer, permissions are not enough.
+    Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> isDefaultDialer()
     // Android N+ has call screening that should be used when default dialer is enabled.
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> areAllPermissionsGranted(
         Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.READ_CALL_LOG,
         Manifest.permission.CALL_PHONE
-    ) && isDefaultDialer()
+    ) || isDefaultDialer()
     // Android M+ has runtime permissions that require following permissions to be granted.
     Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> areAllPermissionsGranted(
         Manifest.permission.READ_PHONE_STATE,
